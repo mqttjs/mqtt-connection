@@ -3,6 +3,11 @@ var generateStream  = require('./lib/generateStream')
   , parseStream     = require('./lib/parseStream')
   , Reduplexer      = require('reduplexer')
   , inherits        = require('inherits')
+  , setImmediate    = global.setImmediate
+
+setImmediate = setImmediate || function(func) {
+  setTimeout(func, 0)
+}
 
 function emitPacket(packet) {
   this.emit(packet.cmd, packet)
