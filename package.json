@@ -23,7 +23,7 @@
   "homepage": "https://github.com/mcollina/mqtt-connection",
   "dependencies": {
     "inherits": "^2.0.1",
-    "mqtt-packet": "^1.0.3",
+    "mqtt-packet": "^2.0.0",
     "reduplexer": "^1.1.0"
   },
   "devDependencies": {
