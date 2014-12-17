@@ -1,4 +1,4 @@
-mqtt-connection
+mqtt-connection&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mcollina/mqtt-connection.png)](https://travis-ci.org/mcollina/mqtt-connection)
 ===============
 
 Barebone Connection object for MQTT.
