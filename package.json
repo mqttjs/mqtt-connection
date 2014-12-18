@@ -1,6 +1,6 @@
 {
   "name": "mqtt-connection",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Legacy MqttConnection from MQTT.js, with no backpressure!",
   "main": "connection.js",
   "scripts": {

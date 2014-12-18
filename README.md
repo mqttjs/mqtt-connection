@@ -8,6 +8,10 @@ It uses [mqtt-packet](http://npm.im/mqtt-packet) for generating and
 parsing MQTT packets. See it for the full documentations on the
 packet types.
 
+This library works with node v0.10 and node v0.8, but it requires at
+least NPM 1.4. To upgrade on node v0.8, run `npm install
+npm@v1.4-latest -g`.
+
 Acknowledgements
 ----------------
 
