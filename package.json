@@ -1,7 +1,7 @@
 {
   "name": "mqtt-connection",
-  "version": "1.0.0",
-  "description": "Legacy MqttConnection from MQTT.js, with no backpressure!",
+  "version": "1.0.1",
+  "description": "Stream-based Connection object for MQTT, extracted from MQTT.js",
   "main": "connection.js",
   "scripts": {
     "test": "mocha test/"
