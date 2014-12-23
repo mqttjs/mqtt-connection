@@ -1,6 +1,6 @@
 {
   "name": "mqtt-connection",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Stream-based Connection object for MQTT, extracted from MQTT.js",
   "main": "connection.js",
   "scripts": {
@@ -24,11 +24,11 @@
   "dependencies": {
     "inherits": "^2.0.1",
     "mqtt-packet": "^2.0.0",
-    "reduplexer": "^1.1.0"
+    "reduplexer": "^1.1.0",
+    "through2": "^0.6.3"
   },
   "devDependencies": {
     "mocha": "^2.0.1",
-    "should": "^4.4.1",
-    "through2": "^0.6.3"
+    "should": "^4.4.1"
   }
 }
