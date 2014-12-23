@@ -53,6 +53,33 @@ server.on('connection', function(stream) {
 });
 ```
 
+As a websocket server:
+
+```js
+var websocket = require('websocket-stream')
+  , WebSocketServer = require('ws').Server
+  , Connection = require('mqtt-connection')
+  , server = http.createServer()
+
+function attachWebsocketServer(server, handler) {
+  var wss = new WebSocketServer({server: server})
+
+  if (handler)
+    server.on('client', handler)
+
+  wss.on('connection', function(ws) {
+    var stream = websocket(ws)
+    var connection = new Connection(stream)
+
+    server.emit("client", connection)
+  })
+
+  return server
+}
+
+attachWebsocketServer(server)
+```
+
 API
 ---
 
