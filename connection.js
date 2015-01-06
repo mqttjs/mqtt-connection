@@ -6,7 +6,7 @@ var generateStream  = require('./lib/generateStream')
   , setImmediate    = global.setImmediate
 
 setImmediate = setImmediate || function(func) {
-  setTimeout(func, 0)
+  process.nextTick(func);
 }
 
 function emitPacket(packet) {
