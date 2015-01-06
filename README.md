@@ -1,4 +1,4 @@
-mqtt-connection&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mcollina/mqtt-connection.png)](https://travis-ci.org/mcollina/mqtt-connection)
+mqtt-connection&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mqttjs/mqtt-connection.png)](https://travis-ci.org/mqttjs/mqtt-connection)
 ===============
 
 Barebone Connection object for MQTT.
@@ -8,15 +8,15 @@ It uses [mqtt-packet](http://npm.im/mqtt-packet) for generating and
 parsing MQTT packets. See it for the full documentations on the
 packet types.
 
+  * <a href="#install">Install</a>
+  * <a href="#usage">Usage</a>
+  * <a href="#api">API</a>
+  * <a href="#contributing">Contributing</a>
+  * <a href="#license">Licence &amp; copyright</a>
+
 This library works with node v0.10 and node v0.8, but it requires at
 least NPM 1.4. To upgrade on node v0.8, run `npm install
 npm@v1.4-latest -g`.
-
-Acknowledgements
-----------------
-
-This library has been extracted and refactored from
-[MQTT.js](http://github.com/adamvr/MQTT.js). Thanks [Adam Rudd](http://github.com/adamvr) for the great module.
 
 Install
 -------
@@ -273,6 +273,25 @@ unsubscribing from, of the form `[topic1, topic2, ...]`
 Emitted when an MQTT `[pingreq, pingresp, disconnect]` packet is received.
 
 `packet` only includes static header information and can be ignored.
+
+<a name="contributing"></a>
+Contributing
+------------
+
+mqtt-connection is an **OPEN Open Source Project**. This means that:
+
+> Individuals making significant and valuable contributions are given commit-access to the project to contribute as they see fit. This project is more like an open wiki than a standard guarded open source project.
+
+See the [CONTRIBUTING.md](https://github.com/mqttjs/mqtt-connection/blob/master/CONTRIBUTING.md) file for more details.
+
+### Contributors
+
+mqtt-packet is only possible due to the excellent work of the following contributors:
+
+<table><tbody>
+<tr><th align="left">Matteo Collina</th><td><a href="https://github.com/mcollina">GitHub/mcollina</a></td><td><a href="http://twitter.com/matteocollina">Twitter/@matteocollina</a></td></tr>
+<tr><th align="left">Adam Rudd</th><td><a href="https://github.com/adamvr">GitHub/adamvr</a></td><td><a href="http://twitter.com/adam_vr">Twitter/@adam_vr</a></td></tr>
+</tbody></table>
 
 License
 -------
