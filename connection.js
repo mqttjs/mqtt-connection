@@ -28,7 +28,7 @@ function Connection(duplex, opts) {
 
   this.stream = duplex
 
-  duplex.on('error', this.emit.bind(this, 'error'));
+  duplex.on('error', this.emit.bind(this, 'error'))
   duplex.on('close', this.emit.bind(this, 'close'))
 
   Reduplexer.call(this, inStream, outStream, { objectMode: true })
