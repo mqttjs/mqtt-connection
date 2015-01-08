@@ -1,7 +1,7 @@
 The MIT License (MIT)
 =====================
 
-Copyright (c) 2014 mqtt-connection contributors
+Copyright (c) 2014-2015 mqtt-connection contributors
 ---------------------------------------
 
 *mqtt-connection contributors listed at <https://github.com/mqttjs/mqtt-connection#contributors>*
