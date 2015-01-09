@@ -59,13 +59,13 @@ module.exports = function() {
           retain: true,
           qos: 2,
           topic: "topic",
-          payload: "payload"
+          payload: new Buffer("payload")
         },
         clean: true,
         keepalive: 30,
         clientId: "test",
         username: "username",
-        password: "password"
+        password: new Buffer("password")
       };
       var fixture = [
         16, 54, // Header
@@ -93,102 +93,6 @@ module.exports = function() {
         done();
       });
     });
-
-    it('should handle binary username/password', function(done) {
-      var expected =  {
-        cmd: "connect",
-        retain: false,
-        qos: 0,
-        dup: false,
-        length: 28,
-        protocolId: "MQIsdp",
-        protocolVersion: 3,
-        clean: false,
-        keepalive: 30,
-        clientId: "test",
-        username: new Buffer([12, 13, 14]),
-        password: new Buffer([15, 16, 17]),
-      };
-
-      var fixture = [
-        16, 28, // Header
-        0, 6, // Protocol id length
-        77, 81, 73, 115, 100, 112, // Protocol id
-        3, // Protocol version
-        0x80 | 0x40, // Connect flags
-        0, 30, // Keepalive
-        0, 4, //Client id length
-        116, 101, 115, 116, // Client id
-        0, 3, // username length
-        12, 13, 14, // username
-        0, 3, // password length
-        15, 16, 17 //password
-      ];
-
-      this.stream = stream();
-      this.conn = new Connection(this.stream, { encoding: 'binary' });
-
-      this.stream.write(new Buffer(fixture));
-
-      this.conn.once('connect', function(packet) {
-        packet.username.toString('hex').should.eql(expected.username.toString('hex'));
-        packet.password.toString('hex').should.eql(expected.password.toString('hex'));
-        done();
-      });
-    });
-
-    it('should handle binary will payload', function(done) {
-      var expected = {
-        cmd: "connect",
-        retain: false,
-        qos: 0,
-        dup: false,
-        length: 54,
-        protocolId: "MQIsdp",
-        protocolVersion: 3,
-        will: {
-          retain: true,
-          qos: 2,
-          topic: "topic",
-          payload: new Buffer([18, 19, 20])
-        },
-        clean: true,
-        keepalive: 30,
-        clientId: "test",
-        username: "username",
-        password: "password"
-      };
-
-      var fixture = [
-        16, 50, // Header
-        0, 6, // Protocol id length
-        77, 81, 73, 115, 100, 112, // Protocol id
-        3, // Protocol version
-        246, // Connect flags
-        0, 30, // Keepalive
-        0, 4, // Client id length
-        116, 101, 115, 116, // Client id
-        0, 5, // will topic length
-        116, 111, 112, 105, 99, // will topic
-        0, 3, // will payload length
-        18, 19, 20, // will payload
-        0, 8, // username length
-        117, 115, 101, 114, 110, 97, 109, 101, // username
-        0, 8, // password length
-        112, 97, 115, 115, 119, 111, 114, 100 //password
-      ];
-
-      this.stream = stream();
-      this.conn = new Connection(this.stream, { encoding: 'binary' });
-
-      this.stream.write(new Buffer(fixture));
-
-      this.conn.once('connect', function(packet) {
-        packet.will.payload.toString('hex').should.eql(expected.will.payload.toString('hex'));
-        done();
-      });
-    });
-
 
     describe('parse errors', function() {
       it('should say protocol not parseable', function(done) {
@@ -258,7 +162,7 @@ module.exports = function() {
         dup: false,
         length: 10,
         topic: "test",
-        payload: "test"
+        payload: new Buffer("test")
       };
 
       var fixture = [
@@ -283,7 +187,7 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2054,
-        topic: new Buffer("test", "utf8"),
+        topic: "test",
         payload: new Buffer(2048)
       };
 
@@ -296,7 +200,7 @@ module.exports = function() {
       fixture = Buffer.concat([fixture, expected.payload]);
 
       var s = stream()
-      var c = new Connection(s, { encoding: 'binary' });
+      var c = new Connection(s);
 
       s.write(fixture);
 
@@ -313,7 +217,7 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 6 + 2 * 1024 * 1024,
-        topic: new Buffer("test", "utf8"),
+        topic: "test",
         payload: new Buffer(2 * 1024 * 1024)
       };
 
@@ -326,7 +230,7 @@ module.exports = function() {
       fixture = Buffer.concat([fixture, expected.payload]);
 
       var s = stream()
-      var c = new Connection(s, { encoding: 'binary' });
+      var c = new Connection(s);
 
       s.write(fixture);
 
@@ -345,7 +249,7 @@ module.exports = function() {
         dup: true,
         topic: "test",
         messageId: 10,
-        payload: "test"
+        payload: new Buffer("test")
       };
 
       var fixture = [
@@ -372,7 +276,7 @@ module.exports = function() {
         dup: false,
         length: 6,
         topic: "test",
-        payload: ""
+        payload: new Buffer(0)
       };
 
       var fixture = [
@@ -398,7 +302,7 @@ module.exports = function() {
         dup: false,
         length: 10,
         topic: "test",
-        payload: "test"
+        payload: new Buffer("test")
       };
 
       var fixture1 = [

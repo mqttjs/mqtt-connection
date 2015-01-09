@@ -469,7 +469,7 @@ module.exports = function() {
             keepalive: 30,
             will: {
               topic: 'test',
-              payload: [],
+              payload: 42,
               qos: 0,
               retain: false
             }
