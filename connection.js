@@ -74,5 +74,6 @@ Connection.prototype.destroy = function() {
     this.stream.end()
 }
 
-
-module.exports = Connection;
+module.exports = Connection
+module.exports.parseStream = parseStream
+module.exports.generateStream = generateStream

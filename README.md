@@ -83,6 +83,15 @@ attachWebsocketServer(server)
 API
 ---
 
+  * <a href="#connection"><code>mqtt.<b>Connection()</b></code></a>
+  * <a href="#parseStream"><code>mqtt.<b>parseStream()</b></code></a>
+  * <a href="#generateStream"><code>mqtt.<b>parseStream()</b></code></a>
+
+---------------------------------
+
+<a name="connection"></a>
+### new mqtt.Connection([options])
+
 Creates a new MQTT `Connection`.
 
 Options:
@@ -92,7 +101,7 @@ Options:
     consume the packets. If this option is passed `true` the object will
     emit no packet-related events.
 
-### Connection#connect(options, [callback])
+#### Connection#connect(options, [callback])
 
 Send an MQTT connect packet.
 
@@ -112,7 +121,7 @@ Send an MQTT connect packet.
 * `username`: username for protocol v3.1. `string`
 * `password`: password for protocol v3.1. `string`
 
-### Connection#connack(options, [callback])
+#### Connection#connack(options, [callback])
 Send an MQTT connack packet.
 
 `options` supports the following properties:
@@ -120,7 +129,7 @@ Send an MQTT connack packet.
 * `returnCode`: the return code of the connack, success is
 indicated by `0`. `number`
 
-### Connection#publish(options, [callback])
+#### Connection#publish(options, [callback])
 Send an MQTT publish packet.
 
 `options` supports the following properties:
@@ -133,14 +142,14 @@ Send an MQTT publish packet.
 required if qos > 0. `number`
 * `retain`: retain flag. `boolean`
 
-### Connection#puback #pubrec #pubcomp #unsuback(options, [callback])
+#### Connection#puback #pubrec #pubcomp #unsuback(options, [callback])
 Send an MQTT `[puback, pubrec, pubcomp, unsuback]` packet.
 
 `options` supports the following properties:
 
 * `messageId`: the ID of the packet
 
-### Connection#pubrel(options, [callback])
+#### Connection#pubrel(options, [callback])
 Send an MQTT pubrel packet.
 
 `options` supports the following properties:
@@ -148,7 +157,7 @@ Send an MQTT pubrel packet.
 * `dup`: duplicate message flag
 * `messageId`: the ID of the packet
 
-### Connection#subscribe(options, [callback])
+#### Connection#subscribe(options, [callback])
 Send an MQTT subscribe packet.
 
 `options` supports the following properties:
@@ -158,7 +167,7 @@ Send an MQTT subscribe packet.
 * `subscriptions`: a list of subscriptions of the form 
 `[{topic: a, qos: 0}, {topic: b, qos: 1}]` 
 
-### Connection#suback(options, [callback])
+#### Connection#suback(options, [callback])
 Send an MQTT suback packet.
 
 `options` supports the following properties:
@@ -167,7 +176,7 @@ Send an MQTT suback packet.
 of the form `[0, 1, 2]`
 * `messageId`: the ID of the packet
 
-### Connection#unsubscribe(options, [callback])
+#### Connection#unsubscribe(options, [callback])
 Send an MQTT unsubscribe packet.
 
 `options` supports the following properties:
@@ -177,10 +186,10 @@ Send an MQTT unsubscribe packet.
 * `unsubscriptions`: a list of topics to unsubscribe from, 
 of the form `["topic1", "topic2"]`
 
-### Connection#pingreq #pingresp #disconnect(options, [callback])
+#### Connection#pingreq #pingresp #disconnect(options, [callback])
 Send an MQTT `[pingreq, pingresp, disconnect]` packet.
 
-### Event: 'connect'
+#### Event: 'connect'
 `function(packet) {}`
 
 Emitted when an MQTT connect packet is received by the client.
@@ -200,7 +209,7 @@ Emitted when an MQTT connect packet is received by the client.
 * `username`: v3.1 username
 * `password`: v3.1 password
 
-### Event: 'connack'
+#### Event: 'connack'
 `function(packet) {}`
 
 Emitted when an MQTT connack packet is received by the client.
@@ -209,7 +218,7 @@ Emitted when an MQTT connack packet is received by the client.
 
 * `returnCode`: the return code of the connack packet
 
-### Event: 'publish'
+#### Event: 'publish'
 `function(packet) {}`
 
 Emitted when an MQTT publish packet is received by the client.
@@ -221,7 +230,7 @@ Emitted when an MQTT publish packet is received by the client.
 * `messageId`: the ID of the packet
 * `qos`: the QoS level to publish at
 
-### Events: \<'puback', 'pubrec', 'pubrel', 'pubcomp', 'unsuback'\>
+#### Events: \<'puback', 'pubrec', 'pubrel', 'pubcomp', 'unsuback'\>
 `function(packet) {}`
 
 Emitted when an MQTT `[puback, pubrec, pubrel, pubcomp, unsuback]` 
@@ -231,7 +240,7 @@ packet is received by the client.
 
 * `messageId`: the ID of the packet
 
-### Event: 'subscribe'
+#### Event: 'subscribe'
 `function(packet) {}`
 
 Emitted when an MQTT subscribe packet is received.
@@ -245,7 +254,7 @@ representing the subscribed topics, containing the following keys
   * `qos`: the qos level of the subscription
 
 
-### Event: 'suback'
+#### Event: 'suback'
 `function(packet) {}`
 
 Emitted when an MQTT suback packet is received.
@@ -255,7 +264,7 @@ Emitted when an MQTT suback packet is received.
 * `messageId`: the ID of the packet
 * `granted`: a vector of granted QoS levels
 
-### Event: 'unsubscribe'
+#### Event: 'unsubscribe'
 `function(packet) {}`
 
 Emitted when an MQTT unsubscribe packet is received.
@@ -266,12 +275,25 @@ Emitted when an MQTT unsubscribe packet is received.
 * `unsubscriptions`: a list of topics the client is 
 unsubscribing from, of the form `[topic1, topic2, ...]`
 
-### Events: \<'pingreq', 'pingresp', 'disconnect'\>
+#### Events: \<'pingreq', 'pingresp', 'disconnect'\>
 `function(packet){}`
 
 Emitted when an MQTT `[pingreq, pingresp, disconnect]` packet is received.
 
 `packet` only includes static header information and can be ignored.
+
+-------------------------------------
+
+<a name="generateStream">
+### mqtt.generateStream()
+
+Returns a `Transform` stream that calls [`generate()`](https://github.com/mqttjs/mqtt-packet#generate).
+The stream is configured into object mode.
+
+<a name="parseStream">
+### mqtt.parseStream(opts)
+
+Returns a `Transform` stream that embeds a [`Parser`](https://github.com/mqttjs/mqtt-packet#mqttparser) and calls [`Parser.parse()`](https://github.com/mqttjs/mqtt-packet#parserparsebuffer) for each new `Buffer`. The stream is configured into object mode. It accepts the same options of [`parser(opts)`](#parser).
 
 <a name="contributing"></a>
 Contributing
