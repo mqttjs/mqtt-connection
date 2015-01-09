@@ -87,7 +87,6 @@ Creates a new MQTT `Connection`.
 
 Options:
 
-  * `encoding`: encoding of the payload. See [buffer docs](http://nodejs.org/api/buffer.html#buffer_buffer)
   * `notData`: do not listen to the `'data'` event, so that it can
     respect backpressure. Pipe the `Connection` to another stream to
     consume the packets. If this option is passed `true` the object will
