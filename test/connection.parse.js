@@ -23,7 +23,9 @@ module.exports = function() {
         protocolVersion: 3,
         clean: false,
         keepalive: 30,
-        clientId: "test"
+        clientId: "test",
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -65,7 +67,9 @@ module.exports = function() {
         keepalive: 30,
         clientId: "test",
         username: "username",
-        password: new Buffer("password")
+        password: new Buffer("password"),
+        topic: null,
+        payload: null
       };
       var fixture = [
         16, 54, // Header
@@ -119,7 +123,9 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
-        returnCode: 0
+        returnCode: 0,
+        topic: null,
+        payload: null
       }
 
       var fixture = [32, 2, 0, 0];
@@ -139,7 +145,9 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
-        returnCode: 5
+        returnCode: 5,
+        topic: null,
+        payload: null
       }
 
       var fixture = [32, 2, 0, 5];
@@ -333,7 +341,9 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
-        messageId: 2
+        messageId: 2,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -358,7 +368,9 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
-        messageId: 3
+        messageId: 3,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -383,7 +395,9 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
-        messageId: 4
+        messageId: 4,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -408,7 +422,9 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
-        messageId: 5
+        messageId: 5,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -439,7 +455,9 @@ module.exports = function() {
             qos: 0
           }
         ],
-        messageId: 6
+        messageId: 6,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -476,7 +494,9 @@ module.exports = function() {
             qos: 2
           }
         ],
-        messageId: 6
+        messageId: 6,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -511,7 +531,9 @@ module.exports = function() {
         dup: false,
         length: 6,
         granted: [0, 1, 2, 128],
-        messageId: 6
+        messageId: 6,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -541,7 +563,9 @@ module.exports = function() {
           'tfst',
           'test'
         ],
-        messageId: 7
+        messageId: 7,
+        topic: null,
+        payload: null
       }
 
       var fixture = [
@@ -570,7 +594,9 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
-        messageId: 8
+        messageId: 8,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -595,6 +621,8 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 0,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -618,6 +646,8 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 0,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
@@ -641,6 +671,8 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 0,
+        topic: null,
+        payload: null
       };
 
       var fixture = [
