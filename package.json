@@ -1,11 +1,11 @@
 {
   "name": "mqtt-connection",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Stream-based Connection object for MQTT, extracted from MQTT.js",
   "main": "connection.js",
   "contributors": [
     "Matteo Collina <matteo.collina@gmail.com> (https://github.com/mcollina)",
-    "Adam Rudd <adam.rudd@uqconnect.edu.au>"
+    "Adam Rudd <adamvrr@gmail.com>"
   ],
   "scripts": {
     "test": "mocha test/"
