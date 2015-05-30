@@ -44,13 +44,136 @@ As a server:
 ```js
 var net     = require('net')
   , mqttCon = require('mqtt-connection')
-  , server  = new net.Server();
-
+  , server  = new net.Server()
+  , clients = []
+  , port = 1883
+  , cutoffMinutes = 15;
+  
 server.on('connection', function(stream) {
-  var conn = mqttCon(stream);
+	var client = mqttCon(stream);
 
-  // conn is your MQTT connection!
-});
+	// Client connected
+	client.on('connect', function( packet ) {
+		// Connection acknowledgement
+		client.connack({returnCode: 0});
+		
+		// Set client ID
+		client.id = packet.clientId;
+
+		// Set client's last seen
+		client.last_seen = Math.round( new Date().getTime() / 1000 );
+
+		// Save in clients[] array
+		clients[ client.id ] = client;
+	});
+	
+	// Client published
+	client.on( 'publish', function( packet ) {
+		// Save client's last seen
+		client.last_seen = Math.round( new Date().getTime() / 1000 );
+
+		// Broadcast to all clients
+		for (var k in clients) {
+			clients[k].publish({topic: packet.topic, payload: packet.payload});
+		}
+	});
+	
+	// Client subscribed
+	client.on('subscribe', function(packet) {
+		var granted = [];
+		for (var i = 0; i < packet.subscriptions.length; i++) {
+		  granted.push(packet.subscriptions[i].qos);
+		}
+
+		// Acknowledge subscription
+		client.suback({granted: granted});
+	});
+	
+	// Client pinged
+	client.on('pingreq', function(packet) {
+		// Save client's last seen
+		client.last_seen = Math.round( new Date().getTime() / 1000 );
+
+		// Respond to ping
+		client.pingresp();
+	});
+	
+	// Client disconnected
+	client.on('disconnect', function(packet) {
+		// Remove from clients
+		if ( clients[client.id] )
+		{
+			delete clients[client.id];
+		}
+
+		// End stream
+		client.stream.destroy();
+		client.stream.end();
+	});
+
+	// Client closed connection
+	client.on('close', function(err) {
+		// Remove from clients
+		if ( clients[client.id] )
+		{
+			delete clients[client.id];
+		}
+
+		// End stream
+		client.stream.destroy();
+		client.stream.end();
+	});
+
+	// Client connection error
+	client.on('error', function( err ) {
+		// Remove from clients
+		if ( clients[client.id] )
+		{
+			delete clients[client.id];
+		}
+
+		// End stream
+		client.stream.destroy();
+		client.stream.end();
+	});
+}).listen( port );
+
+// Log port number
+console.log( 'mqtt-connection listening on port ' + port );
+
+// "Memory leak" prevention
+//
+// Kill old client connections
+// (that did not keep alive
+// for more than X minutes
+
+setInterval( function()
+{
+	// Kill connections that have not
+	// pinged for more than X minutes
+
+	var cutoff = Math.round( new Date().getTime() / 1000 ) - ( 60 * cutoffMinutes );
+
+	for ( var i in clients )
+	{
+		// Get client
+		var client = clients[i];
+
+		// Time to kill?
+		if ( client.last_seen < cutoff )
+		{
+			// End stream
+			client.stream.destroy();
+			client.stream.end();
+
+			// Remove from clients
+			if ( clients[client.id] )
+			{
+				delete clients[client.id];
+			}
+		}
+	}
+}, 10000);
 ```
 
 As a websocket server:
