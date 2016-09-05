@@ -123,6 +123,7 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
+        sessionPresent: false,
         returnCode: 0,
         topic: null,
         payload: null
@@ -145,6 +146,7 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
+        sessionPresent: false,
         returnCode: 5,
         topic: null,
         payload: null
@@ -219,6 +221,8 @@ module.exports = function() {
     });
 
     it('should fire a publish event with 2MB payload', function(done) {
+      this.timeout(10000);
+
       var expected = {
         cmd: "publish",
         retain: false,

@@ -309,7 +309,7 @@ module.exports = function() {
             keepalive: 30
           };
 
-          var expectedErr = 'Invalid client id';
+          var expectedErr = 'clientId must be supplied before 3.1.1';
 
           this.conn.once('error', function(error) {
             error.message.should.equal(expectedErr);
@@ -327,7 +327,7 @@ module.exports = function() {
             keepalive: 30
           };
 
-          var expectedErr = 'Invalid client id';
+          var expectedErr = 'clientId must be supplied before 3.1.1';
 
           this.conn.once('error', function(error) {
             error.message.should.equal(expectedErr);
@@ -345,7 +345,7 @@ module.exports = function() {
             keepalive: 30
           };
 
-          var expectedErr = 'Invalid client id';
+          var expectedErr = 'clientId must be supplied before 3.1.1';
 
           this.conn.once('error', function(error) {
             error.message.should.equal(expectedErr);
@@ -835,7 +835,7 @@ module.exports = function() {
   describe('#pubcomp', function() {
     it('should send a pubcomp packet', function(done) {
       var expected = new Buffer([
-        116, 2, // header
+        112, 2, // header
         0, 9 // mid=9
       ]);
 
