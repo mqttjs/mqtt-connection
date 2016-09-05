@@ -4,6 +4,9 @@
 var should = require('should')
   , stream = require('./util').testStream;
 
+// This is so we can use eql to compare Packet objects with plain objects:
+should.config.checkProtoEql = false;
+
 /**
  * Units under test
  */
