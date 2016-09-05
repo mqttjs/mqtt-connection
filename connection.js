@@ -1,6 +1,7 @@
 
 var generateStream  = require('./lib/generateStream')
   , parseStream     = require('./lib/parseStream')
+  , writeToStream   = require('./lib/writeToStream')
   , Reduplexer      = require('reduplexer')
   , inherits        = require('inherits')
   , setImmediate    = global.setImmediate
@@ -20,7 +21,7 @@ function Connection(duplex, opts) {
 
   opts = opts || {}
 
-  var inStream  = generateStream()
+  var inStream  = writeToStream()
     , outStream = parseStream(opts)
 
   duplex.pipe(outStream)

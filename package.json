@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/mqttjs/mqtt-connection",
   "dependencies": {
+    "duplexify": "^3.4.5",
     "inherits": "^2.0.1",
     "mqtt-packet": "^4.0.0",
     "reduplexer": "^1.1.0",
