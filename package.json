@@ -27,8 +27,8 @@
   "dependencies": {
     "duplexify": "^3.4.5",
     "inherits": "^2.0.1",
-    "mqtt-packet": "^4.0.0",
-    "through2": "^0.6.3"
+    "mqtt-packet": "^5.1.0",
+    "through2": "^2.0.1"
   },
   "devDependencies": {
     "mocha": "^3.0.2",

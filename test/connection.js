@@ -16,10 +16,13 @@ describe('Connection', function() {
     this.stream = stream();
     this.conn = new Connection(this.stream);
     this.readFromStream = (stream, length, cb) => {
-      stream.on('readable', () => {
-        var data = stream.read(length);
-        if (data) {
-          cb(data);
+      var buf, done;
+      stream.on('data', data => {
+        if (done) return;
+        buf = buf ? Buffer.concat([ buf, data ]) : data;
+        if (buf.length >= length) {
+          cb(buf.slice(0, length));
+          done = true;
         }
       });
     };

@@ -12,9 +12,6 @@ var should = require('should')
 var Connection = require('../connection');
 
 module.exports = function() {
-  beforeEach(function () {
-    this.stream.removeAllListeners();
-  });
 
   describe('#connect', function() {
     it('should send a connect packet (minimal)', function(done) {
