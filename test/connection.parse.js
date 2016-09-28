@@ -111,7 +111,7 @@ module.exports = function() {
 
         this.stream.write(new Buffer(fixture));
         this.conn.once('error', function(err) {
-          err.message.should.match(/cannot parse protocol id/);
+          err.message.should.match(/cannot parse protocol id/i);
           done();
         });
       });
