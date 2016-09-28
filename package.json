@@ -1,6 +1,6 @@
 {
   "name": "mqtt-connection",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "Stream-based Connection object for MQTT, extracted from MQTT.js",
   "main": "connection.js",
   "contributors": [
