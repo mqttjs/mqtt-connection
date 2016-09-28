@@ -4,6 +4,9 @@
 var should = require('should')
   , stream = require('./util').testStream;
 
+// This is so we can use eql to compare Packet objects with plain objects:
+should.config.checkProtoEql = false;
+
 /**
  * Units under test
  */
@@ -123,6 +126,7 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
+        sessionPresent: false,
         returnCode: 0,
         topic: null,
         payload: null
@@ -145,6 +149,7 @@ module.exports = function() {
         qos: 0,
         dup: false,
         length: 2,
+        sessionPresent: false,
         returnCode: 5,
         topic: null,
         payload: null
@@ -243,7 +248,8 @@ module.exports = function() {
       s.write(fixture);
 
       c.once('publish', function(packet) {
-        packet.should.eql(expected);
+        // comparing the whole 2MB buffer is very slow so only check the length
+        packet.length.should.eql(expected.length);
         done();
       });
     });

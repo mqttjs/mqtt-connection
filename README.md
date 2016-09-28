@@ -12,11 +12,10 @@ packet types.
   * <a href="#usage">Usage</a>
   * <a href="#api">API</a>
   * <a href="#contributing">Contributing</a>
-  * <a href="#license">Licence &amp; copyright</a>
+  * <a href="#license">License &amp; copyright</a>
 
-This library works with node v0.10 and node v0.8, but it requires at
-least NPM 1.4. To upgrade on node v0.8, run `npm install
-npm@v1.4-latest -g`.
+This library is tested with node v4 and v6. The last version to support
+older versions of node was mqtt-connection@2.1.1.
 
 Install
 -------
@@ -85,7 +84,7 @@ API
 
   * <a href="#connection"><code>mqtt.<b>Connection()</b></code></a>
   * <a href="#parseStream"><code>mqtt.<b>parseStream()</b></code></a>
-  * <a href="#generateStream"><code>mqtt.<b>parseStream()</b></code></a>
+  * <a href="#generateStream"><code>mqtt.<b>generateStream()</b></code></a>
 
 ---------------------------------
 
@@ -111,7 +110,7 @@ Send an MQTT connect packet.
 * `protocolVersion`: Protocol version, usually 3. `number`
 * `keepalive`: keepalive period in seconds. `number`
 * `clientId`: client ID. `string`
-* `will`: the client's will message options. 
+* `will`: the client's will message options.
 `object` that supports the following properties:
   * `topic`: the will topic. `string`
   * `payload`: the will payload. `string`
@@ -135,10 +134,10 @@ Send an MQTT publish packet.
 `options` supports the following properties:
 
 * `topic`: the topic to publish to. `string`
-* `payload`: the payload to publish, defaults to an empty buffer. 
+* `payload`: the payload to publish, defaults to an empty buffer.
 `string` or `buffer`
 * `qos`: the quality of service level to publish on. `number`
-* `messageId`: the message ID of the packet, 
+* `messageId`: the message ID of the packet,
 required if qos > 0. `number`
 * `retain`: retain flag. `boolean`
 
@@ -164,15 +163,15 @@ Send an MQTT subscribe packet.
 
 * `dup`: duplicate message flag
 * `messageId`: the ID of the packet
-* `subscriptions`: a list of subscriptions of the form 
-`[{topic: a, qos: 0}, {topic: b, qos: 1}]` 
+* `subscriptions`: a list of subscriptions of the form
+`[{topic: a, qos: 0}, {topic: b, qos: 1}]`
 
 #### Connection#suback(options, [callback])
 Send an MQTT suback packet.
 
 `options` supports the following properties:
 
-* `granted`: a vector of granted QoS levels, 
+* `granted`: a vector of granted QoS levels,
 of the form `[0, 1, 2]`
 * `messageId`: the ID of the packet
 
@@ -183,7 +182,7 @@ Send an MQTT unsubscribe packet.
 
 * `messageId`: the ID of the packet
 * `dup`: duplicate message flag
-* `unsubscriptions`: a list of topics to unsubscribe from, 
+* `unsubscriptions`: a list of topics to unsubscribe from,
 of the form `["topic1", "topic2"]`
 
 #### Connection#pingreq #pingresp #disconnect(options, [callback])
@@ -233,7 +232,7 @@ Emitted when an MQTT publish packet is received by the client.
 #### Events: \<'puback', 'pubrec', 'pubrel', 'pubcomp', 'unsuback'\>
 `function(packet) {}`
 
-Emitted when an MQTT `[puback, pubrec, pubrel, pubcomp, unsuback]` 
+Emitted when an MQTT `[puback, pubrec, pubrel, pubcomp, unsuback]`
 packet is received by the client.
 
 `packet` is an object that may contain the property:
@@ -248,7 +247,7 @@ Emitted when an MQTT subscribe packet is received.
 `packet` is an object that may contain the properties:
 
 * `messageId`: the ID of the packet
-* `subscriptions`: an array of objects 
+* `subscriptions`: an array of objects
 representing the subscribed topics, containing the following keys
   * `topic`: the topic subscribed to
   * `qos`: the qos level of the subscription
@@ -272,7 +271,7 @@ Emitted when an MQTT unsubscribe packet is received.
 `packet` is an object that may contain the properties:
 
 * `messageId`: the ID of the packet
-* `unsubscriptions`: a list of topics the client is 
+* `unsubscriptions`: a list of topics the client is
 unsubscribing from, of the form `[topic1, topic2, ...]`
 
 #### Events: \<'pingreq', 'pingresp', 'disconnect'\>

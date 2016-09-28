@@ -1,7 +1,8 @@
 
 var generateStream  = require('./lib/generateStream')
   , parseStream     = require('./lib/parseStream')
-  , Reduplexer      = require('reduplexer')
+  , writeToStream   = require('./lib/writeToStream')
+  , Duplexify       = require('duplexify')
   , inherits        = require('inherits')
   , setImmediate    = global.setImmediate
 
@@ -20,25 +21,28 @@ function Connection(duplex, opts) {
 
   opts = opts || {}
 
-  var inStream  = generateStream()
+  var inStream  = writeToStream()
     , outStream = parseStream(opts)
 
   duplex.pipe(outStream)
   inStream.pipe(duplex)
+
+  inStream.on('error', this.emit.bind(this, 'error'))
+  outStream.on('error', this.emit.bind(this, 'error'))
 
   this.stream = duplex
 
   duplex.on('error', this.emit.bind(this, 'error'))
   duplex.on('close', this.emit.bind(this, 'close'))
 
-  Reduplexer.call(this, inStream, outStream, { objectMode: true })
+  Duplexify.call(this, inStream, outStream, { objectMode: true })
 
   // MQTT.js basic default
   if (opts.notData !== true)
     this.on('data', emitPacket)
 }
 
-inherits(Connection, Reduplexer)
+inherits(Connection, Duplexify)
 
 ;['connect',
   'connack',

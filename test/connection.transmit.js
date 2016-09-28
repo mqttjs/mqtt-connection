@@ -12,9 +12,6 @@ var should = require('should')
 var Connection = require('../connection');
 
 module.exports = function() {
-  beforeEach(function () {
-    this.stream.removeAllListeners();
-  });
 
   describe('#connect', function() {
     it('should send a connect packet (minimal)', function(done) {
@@ -38,10 +35,8 @@ module.exports = function() {
 
       this.conn.connect(fixture);
 
-      var that = this;
-      this.stream.on('readable', function() {
-        var packet = that.stream.read();
-        packet.should.eql(expected);
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -82,9 +77,9 @@ module.exports = function() {
       };
 
       this.conn.connect(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -120,9 +115,8 @@ module.exports = function() {
       s.removeAllListeners();
       c.connect(fixture);
 
-      s.on('readable', function() {
-        var packet = s.read();
-        packet.should.eql(expected);
+      this.readFromStream(s, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -168,9 +162,8 @@ module.exports = function() {
       s.removeAllListeners();
       c.connect(fixture);
 
-      s.on('readable', function() {
-        var packet = s.read();
-        packet.should.eql(expected);
+      this.readFromStream(s, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -217,9 +210,8 @@ module.exports = function() {
       s.removeAllListeners();
       c.connect(fixture);
 
-      s.on('readable', function() {
-        var packet = s.read();
-        packet.should.eql(expected);
+      this.readFromStream(s, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -309,7 +301,7 @@ module.exports = function() {
             keepalive: 30
           };
 
-          var expectedErr = 'Invalid client id';
+          var expectedErr = 'clientId must be supplied before 3.1.1';
 
           this.conn.once('error', function(error) {
             error.message.should.equal(expectedErr);
@@ -327,7 +319,7 @@ module.exports = function() {
             keepalive: 30
           };
 
-          var expectedErr = 'Invalid client id';
+          var expectedErr = 'clientId must be supplied before 3.1.1';
 
           this.conn.once('error', function(error) {
             error.message.should.equal(expectedErr);
@@ -345,7 +337,7 @@ module.exports = function() {
             keepalive: 30
           };
 
-          var expectedErr = 'Invalid client id';
+          var expectedErr = 'clientId must be supplied before 3.1.1';
 
           this.conn.once('error', function(error) {
             error.message.should.equal(expectedErr);
@@ -566,9 +558,9 @@ module.exports = function() {
       };
 
       this.conn.connack(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -584,9 +576,9 @@ module.exports = function() {
       };
 
       this.conn.connack(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -615,9 +607,9 @@ module.exports = function() {
       };
 
       this.conn.publish(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -641,9 +633,9 @@ module.exports = function() {
       };
 
       this.conn.publish(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -661,9 +653,9 @@ module.exports = function() {
       };
 
       this.conn.publish(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -684,14 +676,14 @@ module.exports = function() {
       }
 
       this.conn.publish(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
 
-    it('should send a publish packet of 2 KB', function(done) {
+    it('should send a publish packet of 2KB', function(done) {
       var expected = new Buffer([
         48, 134, 16, // Header
         0, 4, // topic length
@@ -706,9 +698,8 @@ module.exports = function() {
         payload: payload
       };
 
-      this.stream.on('readable', function() {
-        var data = this.read();
-        data.toString('hex').should.eql(expected.toString('hex'));
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
 
@@ -716,7 +707,7 @@ module.exports = function() {
       this.conn.end();
     });
 
-    it('should send a publish packet of 2 MB', function(done) {
+    it('should send a publish packet of 2MB', function(done) {
       var expected = new Buffer([
         48, 134, 128, 128, 1, // Header
         0, 4, // topic length
@@ -732,11 +723,10 @@ module.exports = function() {
       };
 
       this.conn.publish(fixture);
-      this.conn.end();
 
-      this.stream.on('readable', function() {
-        var data = this.read();
-        data.toString('hex').should.eql(expected.toString('hex'));
+      this.readFromStream(this.stream, expected.length, data => {
+        // comparing the whole 2MB buffer is very slow so only check the length
+        data.length.should.eql(expected.length);
         done();
       });
     });
@@ -772,9 +762,9 @@ module.exports = function() {
       };
 
       this.conn.puback(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -800,9 +790,9 @@ module.exports = function() {
       };
 
       this.conn.pubrec(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -822,9 +812,9 @@ module.exports = function() {
       };
 
       this.conn.pubrel(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -835,7 +825,7 @@ module.exports = function() {
   describe('#pubcomp', function() {
     it('should send a pubcomp packet', function(done) {
       var expected = new Buffer([
-        116, 2, // header
+        112, 2, // header
         0, 9 // mid=9
       ]);
 
@@ -844,9 +834,9 @@ module.exports = function() {
       };
 
       this.conn.pubcomp(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -875,14 +865,14 @@ module.exports = function() {
       };
 
       this.conn.subscribe(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
 
-    it('should send subscribe packet (multiple)', function(done) {
+    it('should send a subscribe packet (multiple)', function(done) {
       var expected = new Buffer([
         130, 23, // header
         0, 8, // message id
@@ -914,9 +904,9 @@ module.exports = function() {
       };
 
       this.conn.subscribe(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -958,9 +948,9 @@ module.exports = function() {
       };
 
       this.conn.suback(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -994,9 +984,9 @@ module.exports = function() {
       };
 
       this.conn.unsubscribe(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -1026,9 +1016,9 @@ module.exports = function() {
       };
 
       this.conn.unsuback(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -1046,9 +1036,9 @@ module.exports = function() {
       };
 
       this.conn.pingreq(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -1064,9 +1054,9 @@ module.exports = function() {
       };
 
       this.conn.pingresp(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -1082,9 +1072,9 @@ module.exports = function() {
       };
 
       this.conn.disconnect(fixture);
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });
@@ -1095,9 +1085,9 @@ module.exports = function() {
       ]);
 
       this.conn.disconnect();
-      var that = this;
-      this.stream.once('readable', function() {
-        that.stream.read(expected.length).should.eql(expected);
+
+      this.readFromStream(this.stream, expected.length, data => {
+        data.should.eql(expected);
         done();
       });
     });

@@ -25,13 +25,13 @@
   },
   "homepage": "https://github.com/mqttjs/mqtt-connection",
   "dependencies": {
+    "duplexify": "^3.4.5",
     "inherits": "^2.0.1",
-    "mqtt-packet": "^3.0.0",
-    "reduplexer": "^1.1.0",
-    "through2": "^0.6.3"
+    "mqtt-packet": "^5.1.0",
+    "through2": "^2.0.1"
   },
   "devDependencies": {
-    "mocha": "^2.0.1",
-    "should": "^4.4.1"
+    "mocha": "^3.0.2",
+    "should": "^11.1.0"
   }
 }
