@@ -1,20 +1,20 @@
+/* global describe, it */
+
 /**
  * Testing requires
  */
 
-var should = require('should')
-  , stream = require('./util').testStream;
+var stream = require('./util').testStream
 
 /**
  * Unit under test
  */
 
-var Connection = require('../connection');
+var Connection = require('../connection')
 
-module.exports = function() {
-
-  describe('#connect', function() {
-    it('should send a connect packet (minimal)', function(done) {
+module.exports = function () {
+  describe('#connect', function () {
+    it('should send a connect packet (minimal)', function (done) {
       var expected = new Buffer([
         16, 18, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
@@ -23,7 +23,7 @@ module.exports = function() {
         0, 30, // Keepalive
         0, 4, // Client id length
         116, 101, 115, 116 // Client Id
-      ]);
+      ])
 
       var fixture = {
         protocolId: 'MQIsdp',
@@ -31,17 +31,17 @@ module.exports = function() {
         clientId: 'test',
         keepalive: 30,
         clean: false
-      };
+      }
 
-      this.conn.connect(fixture);
+      this.conn.connect(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a connect packet (maximal)', function(done) {
+    it('should send a connect packet (maximal)', function (done) {
       var expected = new Buffer([
         16, 54, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
@@ -58,7 +58,7 @@ module.exports = function() {
         117, 115, 101, 114, 110, 97, 109, 101, // ('username')
         0, 8, // Password length
         112, 97, 115, 115, 119, 111, 114, 100 // ('password')
-      ]);
+      ])
 
       var fixture = {
         protocolId: 'MQIsdp',
@@ -74,17 +74,17 @@ module.exports = function() {
         clean: true,
         username: 'username',
         password: 'password'
-      };
+      }
 
-      this.conn.connect(fixture);
+      this.conn.connect(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a connect packet with binary username/password', function(done) {
+    it('should send a connect packet with binary username/password', function (done) {
       var expected = new Buffer([
         16, 28, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
@@ -93,11 +93,11 @@ module.exports = function() {
         0, 30, // Keepalive
         0, 4, // Client id length
         116, 101, 115, 116, // Client Id
-        0, 3, // username length
-        12, 13, 14, // username
-        0, 3, // password length
-        15, 16, 17 //password
-      ]);
+        0, 3, // Username length
+        12, 13, 14, // Username
+        0, 3, // Password length
+        15, 16, 17 // Password
+      ])
 
       var fixture = {
         protocolId: 'MQIsdp',
@@ -107,21 +107,21 @@ module.exports = function() {
         clean: false,
         username: new Buffer([12, 13, 14]),
         password: new Buffer([15, 16, 17])
-      };
+      }
 
       var s = stream()
-      var c = new Connection(s, { encoding: 'binary' });
+      var c = new Connection(s, { encoding: 'binary' })
 
-      s.removeAllListeners();
-      c.connect(fixture);
+      s.removeAllListeners()
+      c.connect(fixture)
 
       this.readFromStream(s, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a connect packet with binary will payload', function(done) {
+    it('should send a connect packet with binary will payload', function (done) {
       var expected = new Buffer([
         16, 50, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
@@ -138,7 +138,7 @@ module.exports = function() {
         117, 115, 101, 114, 110, 97, 109, 101, // ('username')
         0, 8, // Password length
         112, 97, 115, 115, 119, 111, 114, 100 // ('password')
-      ]);
+      ])
 
       var fixture = {
         protocolId: 'MQIsdp',
@@ -154,21 +154,21 @@ module.exports = function() {
         clean: true,
         username: 'username',
         password: 'password'
-      };
+      }
 
       var s = stream()
-      var c = new Connection(s, { encoding: 'binary' });
+      var c = new Connection(s, { encoding: 'binary' })
 
-      s.removeAllListeners();
-      c.connect(fixture);
+      s.removeAllListeners()
+      c.connect(fixture)
 
       this.readFromStream(s, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a connect packet with unicode will payload', function(done) {
+    it('should send a connect packet with unicode will payload', function (done) {
       var expected = new Buffer([
         16, 49, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
@@ -185,7 +185,7 @@ module.exports = function() {
         117, 115, 101, 114, 110, 97, 109, 101, // ('username')
         0, 8, // Password length
         112, 97, 115, 115, 119, 111, 114, 100 // ('password')
-      ]);
+      ])
 
       var fixture = {
         protocolId: 'MQIsdp',
@@ -201,24 +201,23 @@ module.exports = function() {
         clean: true,
         username: 'username',
         password: 'password'
-      };
-
+      }
 
       var s = stream()
-      var c = new Connection(s, { encoding: 'binary' });
+      var c = new Connection(s, { encoding: 'binary' })
 
-      s.removeAllListeners();
-      c.connect(fixture);
+      s.removeAllListeners()
+      c.connect(fixture)
 
       this.readFromStream(s, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
     describe('invalid options', function () {
       describe('protocol id', function () {
-        it('should reject non-string', function(done) {
+        it('should reject non-string', function (done) {
           var fixture = {
             protocolId: 42,
             protocolVersion: 3,
@@ -226,258 +225,255 @@ module.exports = function() {
             keepalive: 30
           }
 
-          var expectedErr = 'Invalid protocol id';
+          var expectedErr = 'Invalid protocol id'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
-      });
+          this.conn.connect(fixture)
+        })
+      })
 
-      describe('protocol version', function() {
-        it('should reject non-number', function(done) {
+      describe('protocol version', function () {
+        it('should reject non-number', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: [],
             clientId: 'test',
             keepalive: 30
-          };
+          }
 
-          var expectedErr = 'Invalid protocol version';
+          var expectedErr = 'Invalid protocol version'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
+          this.conn.connect(fixture)
+        })
 
-        it('should reject >255', function(done) {
+        it('should reject >255', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 300,
             clientId: 'test',
             keepalive: 30
-          };
+          }
 
-          var expectedErr = 'Invalid protocol version';
+          var expectedErr = 'Invalid protocol version'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
+          this.conn.connect(fixture)
+        })
 
-        it('should reject <0', function(done) {
+        it('should reject <0', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: -20,
             clientId: 'test',
             keepalive: 30
-          };
+          }
 
-          var expectedErr = 'Invalid protocol version';
+          var expectedErr = 'Invalid protocol version'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
-      });
+          this.conn.connect(fixture)
+        })
+      })
 
-      describe('client id', function() {
-        it('should reject non-present', function(done) {
+      describe('client id', function () {
+        it('should reject non-present', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             keepalive: 30
-          };
+          }
 
-          var expectedErr = 'clientId must be supplied before 3.1.1';
+          var expectedErr = 'clientId must be supplied before 3.1.1'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
+          this.conn.connect(fixture)
+        })
 
-        it('should reject empty', function(done) {
+        it('should reject empty', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             clientId: '',
             keepalive: 30
-          };
+          }
 
-          var expectedErr = 'clientId must be supplied before 3.1.1';
+          var expectedErr = 'clientId must be supplied before 3.1.1'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
+          this.conn.connect(fixture)
+        })
 
-        it('should reject non-string', function(done) {
+        it('should reject non-string', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             clientId: {},
             keepalive: 30
-          };
+          }
 
-          var expectedErr = 'clientId must be supplied before 3.1.1';
+          var expectedErr = 'clientId must be supplied before 3.1.1'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
-      });
+          this.conn.connect(fixture)
+        })
+      })
 
-      describe('keepalive', function() {
-        it('should reject non-number', function(done) {
+      describe('keepalive', function () {
+        it('should reject non-number', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             clientId: 'test',
             keepalive: 'blah'
-          };
+          }
 
-          var expectedErr = 'Invalid keepalive';
+          var expectedErr = 'Invalid keepalive'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
+          this.conn.connect(fixture)
+        })
 
-        it('should reject < 0', function(done) {
+        it('should reject < 0', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             clientId: 'test',
             keepalive: -2
-          };
+          }
 
-          var expectedErr = 'Invalid keepalive';
+          var expectedErr = 'Invalid keepalive'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
+          this.conn.connect(fixture)
+        })
 
-        });
-
-        it('should reject > 65535', function(done) {
+        it('should reject > 65535', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             clientId: 'test',
             keepalive: 65536
-          };
+          }
 
-          var expectedErr = 'Invalid keepalive';
+          var expectedErr = 'Invalid keepalive'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
+          this.conn.connect(fixture)
+        })
+      })
 
-        });
-      });
-
-      describe('will', function() {
-        it('should reject non-object', function(done) {
+      describe('will', function () {
+        it('should reject non-object', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             clientId: 'test',
             keepalive: 30,
             will: 'test'
-          };
+          }
 
-          var expectedErr = 'Invalid will';
+          var expectedErr = 'Invalid will'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-
-        });
+          this.conn.connect(fixture)
+        })
 
         it('should reject will without valid topic',
-            function(done) {
-          var fixture = {
-            protocolId: 'MQIsdp',
-            protocolVersion: 3,
-            clientId: 'test',
-            keepalive: 30,
-            will: {
-              topic: 0,
-              payload: 'test',
-              qos: 0,
-              retain: false
+          function (done) {
+            var fixture = {
+              protocolId: 'MQIsdp',
+              protocolVersion: 3,
+              clientId: 'test',
+              keepalive: 30,
+              will: {
+                topic: 0,
+                payload: 'test',
+                qos: 0,
+                retain: false
+              }
             }
-          };
 
-          var expectedErr = 'Invalid will topic';
+            var expectedErr = 'Invalid will topic'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+            this.conn.once('error', function (error) {
+              error.message.should.equal(expectedErr)
+              done()
+            })
 
-          this.conn.connect(fixture);
-        });
+            this.conn.connect(fixture)
+          })
 
         it('should reject will without valid payload',
-            function(done) {
-          var fixture = {
-            protocolId: 'MQIsdp',
-            protocolVersion: 3,
-            clientId: 'test',
-            keepalive: 30,
-            will: {
-              topic: 'test',
-              payload: 42,
-              qos: 0,
-              retain: false
+          function (done) {
+            var fixture = {
+              protocolId: 'MQIsdp',
+              protocolVersion: 3,
+              clientId: 'test',
+              keepalive: 30,
+              will: {
+                topic: 'test',
+                payload: 42,
+                qos: 0,
+                retain: false
+              }
             }
-          };
 
-          var expectedErr = 'Invalid will payload';
+            var expectedErr = 'Invalid will payload'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+            this.conn.once('error', function (error) {
+              error.message.should.equal(expectedErr)
+              done()
+            })
 
-          this.conn.connect(fixture);
-        });
+            this.conn.connect(fixture)
+          })
 
-        it.skip('should reject will with invalid qos', function(done) {
+        it.skip('should reject will with invalid qos', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
@@ -489,139 +485,139 @@ module.exports = function() {
               qos: '',
               retain: false
             }
-          };
+          }
 
-          var expectedErr = 'Invalid will qos';
+          var expectedErr = 'Invalid will qos'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
-      });
+          this.conn.connect(fixture)
+        })
+      })
 
-      describe('username', function() {
-        it('should reject invalid username', function(done) {
+      describe('username', function () {
+        it('should reject invalid username', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             clientId: 'test',
             keepalive: 30,
             username: 30
-          };
+          }
 
-          var expectedErr = 'Invalid username';
+          var expectedErr = 'Invalid username'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
-      });
+          this.conn.connect(fixture)
+        })
+      })
 
-      describe('password', function() {
-        it('should reject invalid password', function(done) {
+      describe('password', function () {
+        it('should reject invalid password', function (done) {
           var fixture = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             clientId: 'test',
             keepalive: 30,
             password: 30
-          };
+          }
 
-          var expectedErr = 'Invalid password';
+          var expectedErr = 'Invalid password'
 
-          this.conn.once('error', function(error) {
-            error.message.should.equal(expectedErr);
-            done();
-          });
+          this.conn.once('error', function (error) {
+            error.message.should.equal(expectedErr)
+            done()
+          })
 
-          this.conn.connect(fixture);
-        });
-      });
-    });
-  });
+          this.conn.connect(fixture)
+        })
+      })
+    })
+  })
 
-  describe('#connack', function() {
-    it('should send a connack packet (rc = 0)', function(done) {
+  describe('#connack', function () {
+    it('should send a connack packet (rc = 0)', function (done) {
       var expected = new Buffer([
         32, 2, // Header
-        0, 0 // rc=0
-      ]);
+        0, 0 // Rc=0
+      ])
 
       var fixture = {
         returnCode: 0
-      };
+      }
 
-      this.conn.connack(fixture);
+      this.conn.connack(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a connack packet (rc = 4)', function(done) {
+    it('should send a connack packet (rc = 4)', function (done) {
       var expected = new Buffer([
         32, 2, // Header
-        0, 4 // rc=0
-      ]);
+        0, 4 // Rc=0
+      ])
 
       var fixture = {
         returnCode: 4
-      };
+      }
 
-      this.conn.connack(fixture);
+      this.conn.connack(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
     it('should reject invalid rc', function (done) {
-      this.conn.once('error', function(error) {
-        error.message.should.equal('Invalid return code');
-        done();
-      });
-      this.conn.connack({returnCode: 'asdf'});
-    });
-  });
+      this.conn.once('error', function (error) {
+        error.message.should.equal('Invalid return code')
+        done()
+      })
+      this.conn.connack({returnCode: 'asdf'})
+    })
+  })
 
-  describe('#publish', function() {
-    it('should send a publish packet (minimal)', function(done) {
+  describe('#publish', function () {
+    it('should send a publish packet (minimal)', function (done) {
       var expected = new Buffer([
         48, 10, // Header
-        0, 4, // topic length
-        116, 101, 115, 116, // topic ('test')
-        116, 101, 115, 116, // payload ('test')
-      ]);
+        0, 4, // Topic length
+        116, 101, 115, 116, // Topic ('test')
+        116, 101, 115, 116 // Payload ('test')
+      ])
 
       var fixture = {
         topic: 'test',
         payload: 'test'
-      };
+      }
 
-      this.conn.publish(fixture);
+      this.conn.publish(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
     it('should send a publish packet (maximal)', function (done) {
       var expected = new Buffer([
         61, 12, // Header
-        0, 4, // topic length
-        116, 101, 115, 116, // topic ('test')
-        0, 7, // message id (7)
-        116, 101, 115, 116, // payload ('test')
-      ]);
+        0, 4, // Topic length
+        116, 101, 115, 116, // Topic ('test')
+        0, 7, // Message id (7)
+        116, 101, 115, 116 // Payload ('test')
+      ])
 
       var fixture = {
         topic: 'test',
@@ -630,229 +626,229 @@ module.exports = function() {
         retain: true,
         dup: true,
         messageId: 7
-      };
+      }
 
-      this.conn.publish(fixture);
+      this.conn.publish(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a publish packet (empty)', function(done) {
+    it('should send a publish packet (empty)', function (done) {
       var expected = new Buffer([
         48, 6, // Header
-        0, 4, // topic length
-        116, 101, 115, 116 // topic ('test')
-        // empty payload
-      ]);
+        0, 4, // Topic length
+        116, 101, 115, 116 // Topic ('test')
+        // Empty payload
+      ])
 
       var fixture = {
         topic: 'test'
-      };
+      }
 
-      this.conn.publish(fixture);
+      this.conn.publish(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a publish packet (buffer)', function(done) {
+    it('should send a publish packet (buffer)', function (done) {
       var expected = new Buffer([
         48, 10, // Header
-        0, 4, // topic length
-        116, 101, 115, 116, // topic ('test')
-        0, 0, 0, 0 // payload
-      ]);
-      var buf = new Buffer(4);
-      buf.fill(0);
+        0, 4, // Topic length
+        116, 101, 115, 116, // Topic ('test')
+        0, 0, 0, 0 // Payload
+      ])
+      var buf = new Buffer(4)
+      buf.fill(0)
 
       var fixture = {
         topic: 'test',
         payload: buf
       }
 
-      this.conn.publish(fixture);
+      this.conn.publish(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a publish packet of 2KB', function(done) {
+    it('should send a publish packet of 2KB', function (done) {
       var expected = new Buffer([
         48, 134, 16, // Header
-        0, 4, // topic length
-        116, 101, 115, 116 // topic ('test')
-      ]);
-      var payload = new Buffer(2048);
+        0, 4, // Topic length
+        116, 101, 115, 116 // Topic ('test')
+      ])
+      var payload = new Buffer(2048)
 
-      expected = Buffer.concat([expected, payload]);
+      expected = Buffer.concat([expected, payload])
 
       var fixture = {
         topic: 'test',
         payload: payload
-      };
+      }
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
+        data.should.eql(expected)
+        done()
+      })
 
-      this.conn.publish(fixture);
-      this.conn.end();
-    });
+      this.conn.publish(fixture)
+      this.conn.end()
+    })
 
-    it('should send a publish packet of 2MB', function(done) {
+    it('should send a publish packet of 2MB', function (done) {
       var expected = new Buffer([
         48, 134, 128, 128, 1, // Header
-        0, 4, // topic length
-        116, 101, 115, 116 // topic ('test')
-      ]);
-      var payload = new Buffer(2 * 1024 * 1024);
+        0, 4, // Topic length
+        116, 101, 115, 116 // Topic ('test')
+      ])
+      var payload = new Buffer(2 * 1024 * 1024)
 
-      expected = Buffer.concat([expected, payload]);
+      expected = Buffer.concat([expected, payload])
 
       var fixture = {
         topic: 'test',
         payload: payload
-      };
+      }
 
-      this.conn.publish(fixture);
+      this.conn.publish(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        // comparing the whole 2MB buffer is very slow so only check the length
-        data.length.should.eql(expected.length);
-        done();
-      });
-    });
+        // Comparing the whole 2MB buffer is very slow so only check the length
+        data.length.should.eql(expected.length)
+        done()
+      })
+    })
 
     it('should reject invalid topic', function (done) {
-      var error = "Invalid topic";
+      var error = 'Invalid topic'
 
-      this.conn.once('error', function(err) {
-        err.message.should.equal(error);
-        done();
-      });
-      this.conn.publish({topic: 0});
-    });
-    it('should reject invalid payloads, maybe');
-    it('should reject invalid mid', function(done) {
-      this.conn.once('error', function(err) {
-        err.message.should.equal('Invalid message id');
-        done();
-      });
-      this.conn.publish({topic: 'test', messageId: '', qos:1});
-    });
-  });
+      this.conn.once('error', function (err) {
+        err.message.should.equal(error)
+        done()
+      })
+      this.conn.publish({topic: 0})
+    })
+    it('should reject invalid payloads, maybe')
+    it('should reject invalid mid', function (done) {
+      this.conn.once('error', function (err) {
+        err.message.should.equal('Invalid message id')
+        done()
+      })
+      this.conn.publish({topic: 'test', messageId: '', qos: 1})
+    })
+  })
 
-  describe('#puback', function() {
-    it('should send a puback packet', function(done) {
+  describe('#puback', function () {
+    it('should send a puback packet', function (done) {
       var expected = new Buffer([
-        64, 2, // header
-        0, 30 // mid=30
-      ]);
+        64, 2, // Header
+        0, 30 // Mid=30
+      ])
 
       var fixture = {
         messageId: 30
-      };
+      }
 
-      this.conn.puback(fixture);
+      this.conn.puback(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
     it('should reject invalid mid', function (done) {
-      this.conn.once('error', function(error) {
-        error.message.should.equal('Invalid message id');
-        done();
-      });
-      this.conn.puback({messageId: ''});
-    });
-  });
+      this.conn.once('error', function (error) {
+        error.message.should.equal('Invalid message id')
+        done()
+      })
+      this.conn.puback({messageId: ''})
+    })
+  })
 
-  describe('#pubrec', function() {
-    it('should send a pubrec packet', function(done) {
+  describe('#pubrec', function () {
+    it('should send a pubrec packet', function (done) {
       var expected = new Buffer([
-        80, 2, // header
-        0, 3 // mid=3
-      ]);
+        80, 2, // Header
+        0, 3 // Mid=3
+      ])
 
       var fixture = {
         messageId: 3
-      };
+      }
 
-      this.conn.pubrec(fixture);
+      this.conn.pubrec(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should reject invalid mid');
-  });
+    it('should reject invalid mid')
+  })
 
-  describe('#pubrel', function() {
-    it('should send a pubrel packet', function(done) {
+  describe('#pubrel', function () {
+    it('should send a pubrel packet', function (done) {
       var expected = new Buffer([
-        98, 2, // header
-        0, 6 // mid=6
-      ]);
+        98, 2, // Header
+        0, 6 // Mid=6
+      ])
 
       var fixture = {
         messageId: 6
-      };
+      }
 
-      this.conn.pubrel(fixture);
+      this.conn.pubrel(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should reject invalid mid');
-  });
+    it('should reject invalid mid')
+  })
 
-  describe('#pubcomp', function() {
-    it('should send a pubcomp packet', function(done) {
+  describe('#pubcomp', function () {
+    it('should send a pubcomp packet', function (done) {
       var expected = new Buffer([
-        112, 2, // header
-        0, 9 // mid=9
-      ]);
+        112, 2, // Header
+        0, 9 // Mid=9
+      ])
 
       var fixture = {
         messageId: 9
-      };
+      }
 
-      this.conn.pubcomp(fixture);
+      this.conn.pubcomp(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should reject invalid mid');
-  });
+    it('should reject invalid mid')
+  })
 
-  describe('#subscribe', function() {
-    it('should send a subscribe packet (single)', function(done) {
+  describe('#subscribe', function () {
+    it('should send a subscribe packet (single)', function (done) {
       var expected = new Buffer([
-        130, 9, // header
-        0, 7, // message id
-        0, 4, // topic length
-        116, 101, 115, 116, // topic
-        0 // qos=0
-      ]);
+        130, 9, // Header
+        0, 7, // Message id
+        0, 4, // Topic length
+        116, 101, 115, 116, // Topic
+        0 // Qos=0
+      ])
 
       var fixture = {
         messageId: 7,
@@ -862,30 +858,30 @@ module.exports = function() {
             qos: 0
           }
         ]
-      };
+      }
 
-      this.conn.subscribe(fixture);
+      this.conn.subscribe(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a subscribe packet (multiple)', function(done) {
+    it('should send a subscribe packet (multiple)', function (done) {
       var expected = new Buffer([
-        130, 23, // header
-        0, 8, // message id
-        0, 4, // topic length
-        116, 101, 115, 116, // topic ('test')
-        0, // qos=0
-        0, 4, //topic length
-        117, 101, 115, 116, // topic ('uest')
-        1, // qos=1
-        0, 4, //topic length
-        116, 101, 115, 115, // topic ('tess')
-        2 // qos=2
-      ]);
+        130, 23, // Header
+        0, 8, // Message id
+        0, 4, // Topic length
+        116, 101, 115, 116, // Topic ('test')
+        0, // Qos=0
+        0, 4, // Topic length
+        117, 101, 115, 116, // Topic ('uest')
+        1, // Qos=1
+        0, 4, // Topic length
+        116, 101, 115, 115, // Topic ('tess')
+        2 // Qos=2
+      ])
 
       var fixture = {
         messageId: 8,
@@ -893,203 +889,203 @@ module.exports = function() {
           {
             topic: 'test',
             qos: 0
-          },{
+          }, {
             topic: 'uest',
             qos: 1
-          },{
+          }, {
             topic: 'tess',
             qos: 2
           }
         ]
-      };
+      }
 
-      this.conn.subscribe(fixture);
+      this.conn.subscribe(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
     it('should reject invalid subscriptions', function (done) {
-      this.conn.once('error', function(error) {
-        error.message.should.equal('Invalid subscriptions');
-        done();
-      });
+      this.conn.once('error', function (error) {
+        error.message.should.equal('Invalid subscriptions')
+        done()
+      })
       this.conn.subscribe({
         messageId: 1, subscriptions: ''
-      });
-    });
+      })
+    })
 
-    it('should reject invalid subscription objects');
+    it('should reject invalid subscription objects')
     it('should reject invalid mid', function (done) {
-      this.conn.once('error', function(error) {
-        error.message.should.equal('Invalid message id');
-        done();
-      });
+      this.conn.once('error', function (error) {
+        error.message.should.equal('Invalid message id')
+        done()
+      })
       this.conn.subscribe({
-        messageId: '', subscriptions:[{topic: 'test', qos: 1}]
-      });
-    });
-  });
+        messageId: '', subscriptions: [{topic: 'test', qos: 1}]
+      })
+    })
+  })
 
-  describe('#suback', function() {
-    it('should send a suback packet', function(done) {
+  describe('#suback', function () {
+    it('should send a suback packet', function (done) {
       var expected = new Buffer([
-        144, 5, // length
-        0, 4, //mid=4
-        0, // qos=0
-        1, // qos=1
-        2, // qos=2
-      ]);
+        144, 5, // Length
+        0, 4, // Mid=4
+        0, // Qos=0
+        1, // Qos=1
+        2 // Qos=2
+      ])
 
       var fixture = {
         granted: [0, 1, 2],
         messageId: 4
-      };
+      }
 
-      this.conn.suback(fixture);
+      this.conn.suback(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should reject invalid mid');
+    it('should reject invalid mid')
     it('should reject invalid qos vector', function (done) {
-      this.conn.on('error', function(error) {
-        error.message.should.equal('Invalid qos vector');
-        done();
-      });
-      this.conn.suback({granted: '', messageId: 1});
-    });
-  });
+      this.conn.on('error', function (error) {
+        error.message.should.equal('Invalid qos vector')
+        done()
+      })
+      this.conn.suback({granted: '', messageId: 1})
+    })
+  })
 
-  describe('#unsubscribe', function() {
-    it('should send an unsubscribe packet', function(done) {
+  describe('#unsubscribe', function () {
+    it('should send an unsubscribe packet', function (done) {
       var expected = new Buffer([
-        162, 14, // header
-        0, 6, // mid=6
-        0, 4, // topic length
-        116, 101, 115, 116, // topic ('test')
-        0, 4, // topic length
-        116, 115, 101, 116 // topic ('tset')
-      ]);
+        162, 14, // Header
+        0, 6, // Mid=6
+        0, 4, // Topic length
+        116, 101, 115, 116, // Topic ('test')
+        0, 4, // Topic length
+        116, 115, 101, 116 // Topic ('tset')
+      ])
 
       var fixture = {
         messageId: 6,
         unsubscriptions: [
           'test', 'tset'
         ]
-      };
+      }
 
-      this.conn.unsubscribe(fixture);
+      this.conn.unsubscribe(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
     it('should reject invalid unsubs', function (done) {
-      this.conn.once('error', function(error) {
-        error.message.should.equal('Invalid unsubscriptions');
-        done();
-      });
+      this.conn.once('error', function (error) {
+        error.message.should.equal('Invalid unsubscriptions')
+        done()
+      })
       this.conn.unsubscribe({
         messageId: 1,
         unsubscriptions: ''
-      });
-    });
-    it('should reject invalid mids');
-  });
+      })
+    })
+    it('should reject invalid mids')
+  })
 
-  describe('#unsuback', function() {
-    it('should send a unsuback packet', function(done) {
+  describe('#unsuback', function () {
+    it('should send a unsuback packet', function (done) {
       var expected = new Buffer([
-        176, 2, // header
-        0, 8 // mid=8
-      ]);
+        176, 2, // Header
+        0, 8 // Mid=8
+      ])
 
       var fixture = {
         messageId: 8
-      };
+      }
 
-      this.conn.unsuback(fixture);
+      this.conn.unsuback(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should reject invalid mid');
-  });
+    it('should reject invalid mid')
+  })
 
-  describe('#pingreq', function() {
-    it('should send a pingreq packet', function(done) {
+  describe('#pingreq', function () {
+    it('should send a pingreq packet', function (done) {
       var expected = new Buffer([
-        192, 0 // header
-      ]);
+        192, 0 // Header
+      ])
 
       var fixture = {
-      };
+      }
 
-      this.conn.pingreq(fixture);
+      this.conn.pingreq(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
-  });
+        data.should.eql(expected)
+        done()
+      })
+    })
+  })
 
-  describe('#pingresp', function() {
-    it('should send a pingresp packet', function(done) {
+  describe('#pingresp', function () {
+    it('should send a pingresp packet', function (done) {
       var expected = new Buffer([
-        208, 0 // header
-      ]);
+        208, 0 // Header
+      ])
 
       var fixture = {
-      };
+      }
 
-      this.conn.pingresp(fixture);
+      this.conn.pingresp(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
-  });
+        data.should.eql(expected)
+        done()
+      })
+    })
+  })
 
-  describe('#disconnect', function() {
-    it('should send a disconnect packet', function(done) {
+  describe('#disconnect', function () {
+    it('should send a disconnect packet', function (done) {
       var expected = new Buffer([
-        224, 0 // header
-      ]);
+        224, 0 // Header
+      ])
 
       var fixture = {
-      };
+      }
 
-      this.conn.disconnect(fixture);
+      this.conn.disconnect(fixture)
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
+        data.should.eql(expected)
+        done()
+      })
+    })
 
-    it('should send a null disconnect packet', function(done) {
+    it('should send a null disconnect packet', function (done) {
       var expected = new Buffer([
-        224, 0 // header
-      ]);
+        224, 0 // Header
+      ])
 
-      this.conn.disconnect();
+      this.conn.disconnect()
 
       this.readFromStream(this.stream, expected.length, data => {
-        data.should.eql(expected);
-        done();
-      });
-    });
-  });
-};
+        data.should.eql(expected)
+        done()
+      })
+    })
+  })
+}

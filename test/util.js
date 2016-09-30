@@ -1,17 +1,17 @@
 
-var through       = require('through2')
-  , setImmediate  = global.setImmediate
+var through = require('through2')
+var setImmediate = global.setImmediate
 
-setImmediate = setImmediate || function(func) {
+setImmediate = setImmediate || function (func) {
   setTimeout(func, 0)
 }
 
-module.exports.testStream = function() {
-  return through(function(buf, enc, cb) {
-    var that = this;
-    setImmediate(function() {
+module.exports.testStream = function () {
+  return through(function (buf, enc, cb) {
+    var that = this
+    setImmediate(function () {
       that.push(buf)
-      cb();
-    });
-  });
-};
+      cb()
+    })
+  })
+}
