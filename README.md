@@ -4,11 +4,13 @@ mqtt-connection&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mqttjs/m
 Barebone Connection object for MQTT.
 Works over any kind of binary Streams, TCP, TLS, WebSocket, ...
 
+[![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+
 It uses [mqtt-packet](http://npm.im/mqtt-packet) for generating and
 parsing MQTT packets. See it for the full documentations on the
 packet types.
 
-  * <a href="#install">Install</a>
+  * <a href="#installation">Installation</a>
   * <a href="#usage">Usage</a>
   * <a href="#api">API</a>
   * <a href="#contributing">Contributing</a>
@@ -17,7 +19,7 @@ packet types.
 This library is tested with node v4 and v6. The last version to support
 older versions of node was mqtt-connection@2.1.1.
 
-Install
+Installation
 -------
 
 ```sh
@@ -306,7 +308,7 @@ See the [CONTRIBUTING.md](https://github.com/mqttjs/mqtt-connection/blob/master/
 
 ### Contributors
 
-mqtt-packet is only possible due to the excellent work of the following contributors:
+mqtt-connection is only possible due to the excellent work of the following contributors:
 
 <table><tbody>
 <tr><th align="left">Matteo Collina</th><td><a href="https://github.com/mcollina">GitHub/mcollina</a></td><td><a href="http://twitter.com/matteocollina">Twitter/@matteocollina</a></td></tr>
