@@ -1,14 +1,10 @@
+'use strict'
 
 var generateStream = require('./lib/generateStream')
 var parseStream = require('./lib/parseStream')
 var writeToStream = require('./lib/writeToStream')
 var Duplexify = require('duplexify')
 var inherits = require('inherits')
-var setImmediate = global.setImmediate
-
-setImmediate = setImmediate || function (func) {
-  process.nextTick(func)
-}
 
 function emitPacket (packet) {
   this.emit(packet.cmd, packet)
