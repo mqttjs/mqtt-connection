@@ -16,7 +16,7 @@ packet types.
   * <a href="#contributing">Contributing</a>
   * <a href="#license">License &amp; copyright</a>
 
-This library is tested with node v4 and v6. The last version to support
+This library is tested with node v4, v6 and v7. The last version to support
 older versions of node was mqtt-connection@2.1.1.
 
 Installation
