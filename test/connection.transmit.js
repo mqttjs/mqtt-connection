@@ -225,7 +225,7 @@ module.exports = function () {
             keepalive: 30
           }
 
-          var expectedErr = 'Invalid protocol id'
+          var expectedErr = 'Invalid protocolId'
 
           this.conn.once('error', function (error) {
             error.message.should.equal(expectedErr)
