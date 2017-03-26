@@ -139,7 +139,7 @@ Options:
 
 #### Connection#connect(options, [callback])
 
-Send an MQTT connect packet.
+Send a MQTT connect packet.
 
 `options` supports the following properties:
 
@@ -158,7 +158,7 @@ Send an MQTT connect packet.
 * `password`: password for protocol v3.1. `string`
 
 #### Connection#connack(options, [callback])
-Send an MQTT connack packet.
+Send a MQTT connack packet.
 
 `options` supports the following properties:
 
@@ -166,7 +166,7 @@ Send an MQTT connack packet.
 indicated by `0`. `number`
 
 #### Connection#publish(options, [callback])
-Send an MQTT publish packet.
+Send a MQTT publish packet.
 
 `options` supports the following properties:
 
@@ -179,14 +179,14 @@ required if qos > 0. `number`
 * `retain`: retain flag. `boolean`
 
 #### Connection#puback #pubrec #pubcomp #unsuback(options, [callback])
-Send an MQTT `[puback, pubrec, pubcomp, unsuback]` packet.
+Send a MQTT `[puback, pubrec, pubcomp, unsuback]` packet.
 
 `options` supports the following properties:
 
 * `messageId`: the ID of the packet
 
 #### Connection#pubrel(options, [callback])
-Send an MQTT pubrel packet.
+Send a MQTT pubrel packet.
 
 `options` supports the following properties:
 
@@ -194,7 +194,7 @@ Send an MQTT pubrel packet.
 * `messageId`: the ID of the packet
 
 #### Connection#subscribe(options, [callback])
-Send an MQTT subscribe packet.
+Send a MQTT subscribe packet.
 
 `options` supports the following properties:
 
@@ -204,7 +204,7 @@ Send an MQTT subscribe packet.
 `[{topic: a, qos: 0}, {topic: b, qos: 1}]`
 
 #### Connection#suback(options, [callback])
-Send an MQTT suback packet.
+Send a MQTT suback packet.
 
 `options` supports the following properties:
 
@@ -213,7 +213,7 @@ of the form `[0, 1, 2]`
 * `messageId`: the ID of the packet
 
 #### Connection#unsubscribe(options, [callback])
-Send an MQTT unsubscribe packet.
+Send a MQTT unsubscribe packet.
 
 `options` supports the following properties:
 
@@ -223,12 +223,12 @@ Send an MQTT unsubscribe packet.
 of the form `["topic1", "topic2"]`
 
 #### Connection#pingreq #pingresp #disconnect(options, [callback])
-Send an MQTT `[pingreq, pingresp, disconnect]` packet.
+Send a MQTT `[pingreq, pingresp, disconnect]` packet.
 
 #### Event: 'connect'
 `function(packet) {}`
 
-Emitted when an MQTT connect packet is received by the client.
+Emitted when a MQTT connect packet is received by the client.
 
 `packet` is an object that may have the following properties:
 
@@ -248,7 +248,7 @@ Emitted when an MQTT connect packet is received by the client.
 #### Event: 'connack'
 `function(packet) {}`
 
-Emitted when an MQTT connack packet is received by the client.
+Emitted when a MQTT connack packet is received by the client.
 
 `packet` is an object that may have the following properties:
 
@@ -257,7 +257,7 @@ Emitted when an MQTT connack packet is received by the client.
 #### Event: 'publish'
 `function(packet) {}`
 
-Emitted when an MQTT publish packet is received by the client.
+Emitted when a MQTT publish packet is received by the client.
 
 `packet` is an object that may have the following properties:
 
@@ -269,7 +269,7 @@ Emitted when an MQTT publish packet is received by the client.
 #### Events: \<'puback', 'pubrec', 'pubrel', 'pubcomp', 'unsuback'\>
 `function(packet) {}`
 
-Emitted when an MQTT `[puback, pubrec, pubrel, pubcomp, unsuback]`
+Emitted when a MQTT `[puback, pubrec, pubrel, pubcomp, unsuback]`
 packet is received by the client.
 
 `packet` is an object that may contain the property:
@@ -279,7 +279,7 @@ packet is received by the client.
 #### Event: 'subscribe'
 `function(packet) {}`
 
-Emitted when an MQTT subscribe packet is received.
+Emitted when a MQTT subscribe packet is received.
 
 `packet` is an object that may contain the properties:
 
@@ -293,7 +293,7 @@ representing the subscribed topics, containing the following keys
 #### Event: 'suback'
 `function(packet) {}`
 
-Emitted when an MQTT suback packet is received.
+Emitted when a MQTT suback packet is received.
 
 `packet` is an object that may contain the properties:
 
@@ -303,7 +303,7 @@ Emitted when an MQTT suback packet is received.
 #### Event: 'unsubscribe'
 `function(packet) {}`
 
-Emitted when an MQTT unsubscribe packet is received.
+Emitted when a MQTT unsubscribe packet is received.
 
 `packet` is an object that may contain the properties:
 
@@ -314,13 +314,14 @@ unsubscribing from, of the form `[topic1, topic2, ...]`
 #### Events: \<'pingreq', 'pingresp', 'disconnect'\>
 `function(packet){}`
 
-Emitted when an MQTT `[pingreq, pingresp, disconnect]` packet is received.
+Emitted when a MQTT `[pingreq, pingresp, disconnect]` packet is received.
 
 `packet` only includes static header information and can be ignored.
 
 -------------------------------------
 
 <a name="generateStream">
+
 ### mqtt.generateStream()
 
 Returns a `Transform` stream that calls [`generate()`](https://github.com/mqttjs/mqtt-packet#generate).
@@ -333,7 +334,6 @@ The stream is configured into object mode.
 Returns a `Transform` stream that embeds a [`Parser`](https://github.com/mqttjs/mqtt-packet#mqttparser) and calls [`Parser.parse()`](https://github.com/mqttjs/mqtt-packet#parserparsebuffer) for each new `Buffer`. The stream is configured into object mode. It accepts the same options of [`parser(opts)`](#parser).
 
 <a name="contributing"></a>
-
 Contributing
 ------------
 
