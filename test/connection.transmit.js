@@ -225,7 +225,7 @@ module.exports = function () {
             keepalive: 30
           }
 
-          var expectedErr = 'Invalid protocol id'
+          var expectedErr = 'Invalid protocolId'
 
           this.conn.once('error', function (error) {
             error.message.should.equal(expectedErr)
@@ -739,7 +739,7 @@ module.exports = function () {
     it('should reject invalid payloads, maybe')
     it('should reject invalid mid', function (done) {
       this.conn.once('error', function (err) {
-        err.message.should.equal('Invalid message id')
+        err.message.should.equal('Invalid messageId')
         done()
       })
       this.conn.publish({topic: 'test', messageId: '', qos: 1})
@@ -767,7 +767,7 @@ module.exports = function () {
 
     it('should reject invalid mid', function (done) {
       this.conn.once('error', function (error) {
-        error.message.should.equal('Invalid message id')
+        error.message.should.equal('Invalid messageId')
         done()
       })
       this.conn.puback({messageId: ''})
@@ -919,7 +919,7 @@ module.exports = function () {
     it('should reject invalid subscription objects')
     it('should reject invalid mid', function (done) {
       this.conn.once('error', function (error) {
-        error.message.should.equal('Invalid message id')
+        error.message.should.equal('Invalid messageId')
         done()
       })
       this.conn.subscribe({
