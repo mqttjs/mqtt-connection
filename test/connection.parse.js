@@ -3,6 +3,7 @@
 /**
  * Testing requires
  */
+var Buffer = require('safe-buffer').Buffer
 var should = require('should')
 var stream = require('./util').testStream
 
@@ -44,7 +45,7 @@ module.exports = function () {
         116, 101, 115, 116 // Client id
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('connect', function (packet) {
         packet.should.eql(expected)
@@ -65,13 +66,13 @@ module.exports = function () {
           retain: true,
           qos: 2,
           topic: 'topic',
-          payload: new Buffer('payload')
+          payload: Buffer.from('payload')
         },
         clean: true,
         keepalive: 30,
         clientId: 'test',
         username: 'username',
-        password: new Buffer('password'),
+        password: Buffer.from('password'),
         topic: null,
         payload: null
       }
@@ -94,7 +95,7 @@ module.exports = function () {
         112, 97, 115, 115, 119, 111, 114, 100 // Password
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('connect', function (packet) {
         packet.should.eql(expected)
@@ -110,7 +111,7 @@ module.exports = function () {
           77, 81
         ]
 
-        this.stream.write(new Buffer(fixture))
+        this.stream.write(Buffer.from(fixture))
         this.conn.once('error', function (err) {
           err.message.should.match(/cannot parse protocolId/i)
           done()
@@ -135,7 +136,7 @@ module.exports = function () {
 
       var fixture = [32, 2, 0, 0]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('connack', function (packet) {
         packet.should.eql(expected)
@@ -158,7 +159,7 @@ module.exports = function () {
 
       var fixture = [32, 2, 0, 5]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('connack', function (packet) {
         packet.should.eql(expected)
@@ -176,7 +177,7 @@ module.exports = function () {
         dup: false,
         length: 10,
         topic: 'test',
-        payload: new Buffer('test')
+        payload: Buffer.from('test')
       }
 
       var fixture = [
@@ -186,7 +187,7 @@ module.exports = function () {
         116, 101, 115, 116 // Payload (test)
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('publish', function (packet) {
         packet.should.eql(expected)
@@ -202,10 +203,10 @@ module.exports = function () {
         dup: false,
         length: 2054,
         topic: 'test',
-        payload: new Buffer(2048)
+        payload: Buffer.allocUnsafe(2048)
       }
 
-      var fixture = new Buffer([
+      var fixture = Buffer.from([
         48, 134, 16, // Header
         0, 4, // Topic length
         116, 101, 115, 116 // Topic (test)
@@ -232,10 +233,10 @@ module.exports = function () {
         dup: false,
         length: 6 + 2 * 1024 * 1024,
         topic: 'test',
-        payload: new Buffer(2 * 1024 * 1024)
+        payload: Buffer.allocUnsafe(2 * 1024 * 1024)
       }
 
-      var fixture = new Buffer([
+      var fixture = Buffer.from([
         48, 134, 128, 128, 1, // Header
         0, 4, // Topic length
         116, 101, 115, 116 // Topic (test)
@@ -264,7 +265,7 @@ module.exports = function () {
         dup: true,
         topic: 'test',
         messageId: 10,
-        payload: new Buffer('test')
+        payload: Buffer.from('test')
       }
 
       var fixture = [
@@ -275,7 +276,7 @@ module.exports = function () {
         116, 101, 115, 116 // Payload
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('publish', function (packet) {
         packet.should.eql(expected)
@@ -291,7 +292,7 @@ module.exports = function () {
         dup: false,
         length: 6,
         topic: 'test',
-        payload: new Buffer(0)
+        payload: Buffer.allocUnsafe(0)
       }
 
       var fixture = [
@@ -301,7 +302,7 @@ module.exports = function () {
         // Empty payload
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('publish', function (packet) {
         packet.should.eql(expected)
@@ -317,7 +318,7 @@ module.exports = function () {
         dup: false,
         length: 10,
         topic: 'test',
-        payload: new Buffer('test')
+        payload: Buffer.from('test')
       }
 
       var fixture1 = [
@@ -330,8 +331,8 @@ module.exports = function () {
         116, 101, 115, 116 // Payload (test)
       ]
 
-      this.stream.write(new Buffer(fixture1))
-      this.stream.write(new Buffer(fixture2))
+      this.stream.write(Buffer.from(fixture1))
+      this.stream.write(Buffer.from(fixture2))
 
       this.conn.once('publish', function (packet) {
         packet.should.eql(expected)
@@ -358,7 +359,7 @@ module.exports = function () {
         0, 2 // Message id
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('puback', function (packet) {
         packet.should.eql(expected)
@@ -385,7 +386,7 @@ module.exports = function () {
         0, 3 // Message id
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('pubrec', function (packet) {
         packet.should.eql(expected)
@@ -412,7 +413,7 @@ module.exports = function () {
         0, 4 // Message id
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('pubrel', function (packet) {
         packet.should.eql(expected)
@@ -439,7 +440,7 @@ module.exports = function () {
         0, 5 // Message id
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('pubcomp', function (packet) {
         packet.should.eql(expected)
@@ -474,7 +475,7 @@ module.exports = function () {
         116, 101, 115, 116, // Topic (test)
         0 // Qos (0)
       ]
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('subscribe', function (packet) {
         packet.should.eql(expected)
@@ -520,7 +521,7 @@ module.exports = function () {
         2 // Qos (2)
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('subscribe', function (packet) {
         packet.should.eql(expected)
@@ -549,7 +550,7 @@ module.exports = function () {
         0, 1, 2, 128 // Granted qos (0, 1, 2) and a rejected being 0x80
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('suback', function (packet) {
         packet.should.eql(expected)
@@ -584,7 +585,7 @@ module.exports = function () {
         116, 101, 115, 116 // Topic (test)
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('unsubscribe', function (packet) {
         packet.should.eql(expected)
@@ -611,7 +612,7 @@ module.exports = function () {
         0, 8 // Message id
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('unsuback', function (packet) {
         packet.should.eql(expected)
@@ -636,7 +637,7 @@ module.exports = function () {
         192, 0 // Header
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('pingreq', function (packet) {
         packet.should.eql(expected)
@@ -661,7 +662,7 @@ module.exports = function () {
         208, 0 // Header
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('pingresp', function (packet) {
         packet.should.eql(expected)
@@ -686,7 +687,7 @@ module.exports = function () {
         224, 0 // Header
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('disconnect', function (packet) {
         packet.should.eql(expected)
@@ -701,7 +702,7 @@ module.exports = function () {
         240, 0 // Header
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('error', function () {
         done()
@@ -715,7 +716,7 @@ module.exports = function () {
         0, 0 // Header
       ]
 
-      this.stream.write(new Buffer(fixture))
+      this.stream.write(Buffer.from(fixture))
 
       this.conn.once('error', function () {
         done()

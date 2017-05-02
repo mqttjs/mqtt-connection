@@ -17,11 +17,10 @@ function Connection (duplex, opts) {
 
   opts = opts || {}
 
-  var inStream = writeToStream()
+  var inStream = writeToStream(duplex)
   var outStream = parseStream(opts)
 
   duplex.pipe(outStream)
-  inStream.pipe(duplex)
 
   inStream.on('error', this.emit.bind(this, 'error'))
   outStream.on('error', this.emit.bind(this, 'error'))
