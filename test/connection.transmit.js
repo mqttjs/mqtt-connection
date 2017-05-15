@@ -15,7 +15,7 @@ var Connection = require('../connection')
 module.exports = function () {
   describe('#connect', function () {
     it('should send a connect packet (minimal)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         16, 18, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
         3, // Protocol version
@@ -42,7 +42,7 @@ module.exports = function () {
     })
 
     it('should send a connect packet (maximal)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         16, 54, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
         3, // Protocol version
@@ -85,7 +85,7 @@ module.exports = function () {
     })
 
     it('should send a connect packet with binary username/password', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         16, 28, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
         3, // Protocol version
@@ -105,8 +105,8 @@ module.exports = function () {
         clientId: 'test',
         keepalive: 30,
         clean: false,
-        username: new Buffer([12, 13, 14]),
-        password: new Buffer([15, 16, 17])
+        username: Buffer.from([12, 13, 14]),
+        password: Buffer.from([15, 16, 17])
       }
 
       var s = stream()
@@ -122,7 +122,7 @@ module.exports = function () {
     })
 
     it('should send a connect packet with binary will payload', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         16, 50, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
         3, // Protocol version
@@ -147,7 +147,7 @@ module.exports = function () {
         keepalive: 30,
         will: {
           topic: 'topic',
-          payload: new Buffer([18, 19, 20]),
+          payload: Buffer.from([18, 19, 20]),
           qos: 2,
           retain: true
         },
@@ -169,7 +169,7 @@ module.exports = function () {
     })
 
     it('should send a connect packet with unicode will payload', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         16, 49, // Header
         0, 6, 77, 81, 73, 115, 100, 112, // Protocol Id
         3, // Protocol version
@@ -544,7 +544,7 @@ module.exports = function () {
 
   describe('#connack', function () {
     it('should send a connack packet (rc = 0)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         32, 2, // Header
         0, 0 // Rc=0
       ])
@@ -562,7 +562,7 @@ module.exports = function () {
     })
 
     it('should send a connack packet (rc = 4)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         32, 2, // Header
         0, 4 // Rc=0
       ])
@@ -590,7 +590,7 @@ module.exports = function () {
 
   describe('#publish', function () {
     it('should send a publish packet (minimal)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         48, 10, // Header
         0, 4, // Topic length
         116, 101, 115, 116, // Topic ('test')
@@ -611,7 +611,7 @@ module.exports = function () {
     })
 
     it('should send a publish packet (maximal)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         61, 12, // Header
         0, 4, // Topic length
         116, 101, 115, 116, // Topic ('test')
@@ -637,7 +637,7 @@ module.exports = function () {
     })
 
     it('should send a publish packet (empty)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         48, 6, // Header
         0, 4, // Topic length
         116, 101, 115, 116 // Topic ('test')
@@ -657,13 +657,13 @@ module.exports = function () {
     })
 
     it('should send a publish packet (buffer)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         48, 10, // Header
         0, 4, // Topic length
         116, 101, 115, 116, // Topic ('test')
         0, 0, 0, 0 // Payload
       ])
-      var buf = new Buffer(4)
+      var buf = Buffer.allocUnsafe(4)
       buf.fill(0)
 
       var fixture = {
@@ -680,12 +680,12 @@ module.exports = function () {
     })
 
     it('should send a publish packet of 2KB', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         48, 134, 16, // Header
         0, 4, // Topic length
         116, 101, 115, 116 // Topic ('test')
       ])
-      var payload = new Buffer(2048)
+      var payload = Buffer.allocUnsafe(2048)
 
       expected = Buffer.concat([expected, payload])
 
@@ -704,12 +704,12 @@ module.exports = function () {
     })
 
     it('should send a publish packet of 2MB', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         48, 134, 128, 128, 1, // Header
         0, 4, // Topic length
         116, 101, 115, 116 // Topic ('test')
       ])
-      var payload = new Buffer(2 * 1024 * 1024)
+      var payload = Buffer.allocUnsafe(2 * 1024 * 1024)
 
       expected = Buffer.concat([expected, payload])
 
@@ -748,7 +748,7 @@ module.exports = function () {
 
   describe('#puback', function () {
     it('should send a puback packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         64, 2, // Header
         0, 30 // Mid=30
       ])
@@ -776,7 +776,7 @@ module.exports = function () {
 
   describe('#pubrec', function () {
     it('should send a pubrec packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         80, 2, // Header
         0, 3 // Mid=3
       ])
@@ -798,7 +798,7 @@ module.exports = function () {
 
   describe('#pubrel', function () {
     it('should send a pubrel packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         98, 2, // Header
         0, 6 // Mid=6
       ])
@@ -820,7 +820,7 @@ module.exports = function () {
 
   describe('#pubcomp', function () {
     it('should send a pubcomp packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         112, 2, // Header
         0, 9 // Mid=9
       ])
@@ -842,7 +842,7 @@ module.exports = function () {
 
   describe('#subscribe', function () {
     it('should send a subscribe packet (single)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         130, 9, // Header
         0, 7, // Message id
         0, 4, // Topic length
@@ -869,7 +869,7 @@ module.exports = function () {
     })
 
     it('should send a subscribe packet (multiple)', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         130, 23, // Header
         0, 8, // Message id
         0, 4, // Topic length
@@ -930,7 +930,7 @@ module.exports = function () {
 
   describe('#suback', function () {
     it('should send a suback packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         144, 5, // Length
         0, 4, // Mid=4
         0, // Qos=0
@@ -963,7 +963,7 @@ module.exports = function () {
 
   describe('#unsubscribe', function () {
     it('should send an unsubscribe packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         162, 14, // Header
         0, 6, // Mid=6
         0, 4, // Topic length
@@ -1002,7 +1002,7 @@ module.exports = function () {
 
   describe('#unsuback', function () {
     it('should send a unsuback packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         176, 2, // Header
         0, 8 // Mid=8
       ])
@@ -1024,7 +1024,7 @@ module.exports = function () {
 
   describe('#pingreq', function () {
     it('should send a pingreq packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         192, 0 // Header
       ])
 
@@ -1042,7 +1042,7 @@ module.exports = function () {
 
   describe('#pingresp', function () {
     it('should send a pingresp packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         208, 0 // Header
       ])
 
@@ -1060,7 +1060,7 @@ module.exports = function () {
 
   describe('#disconnect', function () {
     it('should send a disconnect packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         224, 0 // Header
       ])
 
@@ -1076,7 +1076,7 @@ module.exports = function () {
     })
 
     it('should send a null disconnect packet', function (done) {
-      var expected = new Buffer([
+      var expected = Buffer.from([
         224, 0 // Header
       ])
 
