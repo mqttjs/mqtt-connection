@@ -20,7 +20,11 @@ function Connection (duplex, opts) {
   var inStream = writeToStream(duplex)
   var outStream = parseStream(opts)
 
-  duplex.pipe(outStream)
+  // defer piping, so consumer can attach event listeners
+  // otherwise we might lose events
+  process.nextTick(() => {
+    duplex.pipe(outStream)
+  })
 
   inStream.on('error', this.emit.bind(this, 'error'))
   outStream.on('error', this.emit.bind(this, 'error'))
