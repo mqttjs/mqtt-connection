@@ -1,10 +1,11 @@
-/* global describe, beforeEach */
+/* global describe, beforeEach, it */
 
 /**
  * Testing requires
  */
 
 var stream = require('./util').testStream
+var should = require('should')
 
 /**
  * Units under test
@@ -26,6 +27,14 @@ describe('Connection', function () {
         }
       })
     }
+  })
+
+  it('should start piping in the next tick', function (done) {
+    should(this.stream._readableState.flowing).eql(null)
+    process.nextTick(() => {
+      this.stream._readableState.flowing.should.eql(true)
+      done()
+    })
   })
 
   describe('parsing', require('./connection.parse.js'))
