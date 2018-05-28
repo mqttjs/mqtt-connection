@@ -529,7 +529,7 @@ module.exports = function () {
             password: 30
           }
 
-          var expectedErr = 'Invalid password'
+          var expectedErr = 'Username is required to use password'
 
           this.conn.once('error', function (error) {
             error.message.should.equal(expectedErr)
