@@ -153,6 +153,25 @@ Send a MQTT connect packet.
   * `payload`: the will payload. `string`
   * `qos`: will qos level. `number`
   * `retain`: will retain flag. `boolean`
+  * `properties`: properties of will by MQTT 5.0:
+      * `willDelayInterval`: representing the Will Delay Interval in seconds `number`,
+      * `payloadFormatIndicator`: Will Message is UTF-8 Encoded Character Data or not `boolean`,
+      * `messageExpiryInterval`: value is the lifetime of the Will Message in seconds and is sent as the Publication Expiry Interval when the Server publishes the Will Message `number`,
+      * `contentType`: describing the content of the Will Message `string`,
+      * `responseTopic`: String which is used as the Topic Name for a response message `string`,
+      * `correlationData`: The Correlation Data is used by the sender of the Request Message to identify which request the Response Message is for when it is received `binary`,
+      * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`
+* `properties`: properties MQTT 5.0.
+`object` that supports the following properties:
+    * `sessionExpiryInterval`: representing the Session Expiry Interval in seconds `number`,
+    * `receiveMaximum`: representing the Receive Maximum value `number`,
+    * `maximumPacketSize`: representing the Maximum Packet Size the Client is willing to accept `number`,
+    * `topicAliasMaximum`: representing the Topic Alias Maximum value indicates the highest value that the Client will accept as a Topic Alias sent by the Server `number`,
+    * `requestResponseInformation`: The Client uses this value to request the Server to return Response Information in the CONNACK `boolean`,
+    * `requestProblemInformation`: The Client uses this value to indicate whether the Reason String or User Properties are sent in the case of failures `boolean`,
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`,
+    * `authenticationMethod`: the name of the authentication method used for extended authentication `string`,
+    * `authenticationData`: Binary Data containing authentication data `binary`
 * `clean`: the 'clean start' flag. `boolean`
 * `username`: username for protocol v3.1. `string`
 * `password`: password for protocol v3.1. `string`
@@ -162,8 +181,27 @@ Send a MQTT connack packet.
 
 `options` supports the following properties:
 
-* `returnCode`: the return code of the connack, success is
-indicated by `0`. `number`
+* `returnCode`: the return code of the connack, success is for MQTT < 5.0
+* `reasonCode`: suback Reason Code `number` MQTT 5.0
+* `properties`: properties MQTT 5.0.
+`object` that supports the following properties:
+    * `sessionExpiryInterval`: representing the Session Expiry Interval in seconds `number`,
+    * `receiveMaximum`: representing the Receive Maximum value `number`,
+    * `maximumQoS`: maximum qos supported by server `number`,
+    * `retainAvailable`: declares whether the Server supports retained messages `boolean`,
+    * `maximumPacketSize`: Maximum Packet Size the Server is willing to accept `number`,
+    * `assignedClientIdentifier`: Assigned Client Identifier `string`,
+    * `topicAliasMaximum`: representing the Topic Alias Maximum value indicates the highest value that the Client will accept as a Topic Alias sent by the Server `number`,
+    * `reasonString`: representing the reason associated with this response `string`,
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`,
+    * `wildcardSubscriptionAvailable`: this byte declares whether the Server supports Wildcard Subscriptions `boolean`
+    * `subscriptionIdentifiersAvailable`: declares whether the Server supports Subscription Identifiers `boolean`,
+    * `sharedSubscriptionAvailable`: declares whether the Server supports Shared Subscriptions `boolean`,
+    * `serverKeepAlive`: Keep Alive time assigned by the Server `number`,
+    * `responseInformation`: String which is used as the basis for creating a Response Topic `string`,
+    * `serverReference`: String which can be used by the Client to identify another Server to use `string`,
+    * `authenticationMethod`: the name of the authentication method used for extended authentication `string`,
+    * `authenticationData`: Binary Data containing authentication data `binary`
 
 #### Connection#publish(options, [callback])
 Send a MQTT publish packet.
@@ -177,6 +215,15 @@ Send a MQTT publish packet.
 * `messageId`: the message ID of the packet,
 required if qos > 0. `number`
 * `retain`: retain flag. `boolean`
+* `properties`: `object`
+    * `payloadFormatIndicator`: Payload is UTF-8 Encoded Character Data or not `boolean`,
+    * `messageExpiryInterval`: the lifetime of the Application Message in seconds `number`,
+    * `topicAlias`: value that is used to identify the Topic instead of using the Topic Name `number`,
+    * `responseTopic`: String which is used as the Topic Name for a response message `string`,
+    * `correlationData`: used by the sender of the Request Message to identify which request the Response Message is for when it is received `binary`,
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`,
+    * `subscriptionIdentifier`: representing the identifier of the subscription `number`,
+    * `contentType`: String describing the content of the Application Message `string`
 
 #### Connection#puback #pubrec #pubcomp #unsuback(options, [callback])
 Send a MQTT `[puback, pubrec, pubcomp, unsuback]` packet.
@@ -184,6 +231,10 @@ Send a MQTT `[puback, pubrec, pubcomp, unsuback]` packet.
 `options` supports the following properties:
 
 * `messageId`: the ID of the packet
+* `reasonCode`: Reason Code by packet `number`
+* `properties`: `object`
+    * `reasonString`: representing the reason associated with this response `string`,
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`
 
 #### Connection#pubrel(options, [callback])
 Send a MQTT pubrel packet.
@@ -191,7 +242,11 @@ Send a MQTT pubrel packet.
 `options` supports the following properties:
 
 * `dup`: duplicate message flag
+* `reasonCode`: pubrel Reason Code `number`
 * `messageId`: the ID of the packet
+* `properties`: `object`
+    * `reasonString`: representing the reason associated with this response `string`,
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`
 
 #### Connection#subscribe(options, [callback])
 Send a MQTT subscribe packet.
@@ -200,8 +255,12 @@ Send a MQTT subscribe packet.
 
 * `dup`: duplicate message flag
 * `messageId`: the ID of the packet
+* `properties`: `object`
+    * `subscriptionIdentifier`:  representing the identifier of the subscription `number`,
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`
 * `subscriptions`: a list of subscriptions of the form
 `[{topic: a, qos: 0}, {topic: b, qos: 1}]`
+`[{topic: a, qos: 0, nl: false, rap: true, rh: 15 }, {topic: b, qos: 1, nl: false, rap: false, rh: 100 }]` MQTT 5.0 Example
 
 #### Connection#suback(options, [callback])
 Send a MQTT suback packet.
@@ -211,6 +270,10 @@ Send a MQTT suback packet.
 * `granted`: a vector of granted QoS levels,
 of the form `[0, 1, 2]`
 * `messageId`: the ID of the packet
+* `reasonCode`: suback Reason Code `number`
+* `properties`: `object`
+    * `reasonString`: representing the reason associated with this response `string`,
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`
 
 #### Connection#unsubscribe(options, [callback])
 Send a MQTT unsubscribe packet.
@@ -218,12 +281,39 @@ Send a MQTT unsubscribe packet.
 `options` supports the following properties:
 
 * `messageId`: the ID of the packet
+* `reasonCode`: unsubscribe Reason Code MQTT 5.0 `number`
 * `dup`: duplicate message flag
+* `properties`: `object`
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`
 * `unsubscriptions`: a list of topics to unsubscribe from,
 of the form `["topic1", "topic2"]`
 
 #### Connection#pingreq #pingresp #disconnect(options, [callback])
-Send a MQTT `[pingreq, pingresp, disconnect]` packet.
+Send a MQTT `[pingreq, pingresp]` packet.
+
+#### Connection#disconnect(options, [callback])
+Send a MQTT `disconnect` packet.
+
+`options` supports the following properties only MQTT 5.0:
+
+* `reasonCode`: Disconnect Reason Code `number`
+* `properties`: `object`
+    * `sessionExpiryInterval`: representing the Session Expiry Interval in seconds `number`,
+    * `reasonString`: representing the reason for the disconnect `string`,
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`,
+    * `serverReference`: String which can be used by the Client to identify another Server to use `string`
+
+#### Connection#auth(options, [callback])
+Send a MQTT `auth` packet. Only MQTT 5.0
+
+`options` supports the following properties only MQTT 5.0:
+
+* `reasonCode`: Auth Reason Code `number`
+* `properties`: `object`
+    * `authenticationMethod`: the name of the authentication method used for extended authentication `string`,
+    * `authenticationData`: Binary Data containing authentication data `binary`,
+    * `reasonString`: representing the reason for the disconnect `string`,
+    * `userProperties`: The User Property is allowed to appear multiple times to represent multiple name, value pairs `object`
 
 #### Event: 'connect'
 `function(packet) {}`
@@ -241,6 +331,8 @@ Emitted when a MQTT connect packet is received by the client.
   * `payload`: the will message
   * `retain`: will retain flag
   * `qos`: will qos level
+  * `properties`: properties of will
+* `properties`: properties of packet
 * `clean`: clean start flag
 * `username`: v3.1 username
 * `password`: v3.1 password
@@ -253,6 +345,7 @@ Emitted when a MQTT connack packet is received by the client.
 `packet` is an object that may have the following properties:
 
 * `returnCode`: the return code of the connack packet
+* `properties`: properties of packet
 
 #### Event: 'publish'
 `function(packet) {}`
@@ -264,6 +357,7 @@ Emitted when a MQTT publish packet is received by the client.
 * `topic`: the topic the message is published on
 * `payload`: the payload of the message
 * `messageId`: the ID of the packet
+* `properties`: properties of packet
 * `qos`: the QoS level to publish at
 
 #### Events: \<'puback', 'pubrec', 'pubrel', 'pubcomp', 'unsuback'\>
@@ -275,6 +369,7 @@ packet is received by the client.
 `packet` is an object that may contain the property:
 
 * `messageId`: the ID of the packet
+* `properties`: properties of packet
 
 #### Event: 'subscribe'
 `function(packet) {}`
@@ -284,6 +379,7 @@ Emitted when a MQTT subscribe packet is received.
 `packet` is an object that may contain the properties:
 
 * `messageId`: the ID of the packet
+* `properties`: properties of packet
 * `subscriptions`: an array of objects
 representing the subscribed topics, containing the following keys
   * `topic`: the topic subscribed to
@@ -298,6 +394,7 @@ Emitted when a MQTT suback packet is received.
 `packet` is an object that may contain the properties:
 
 * `messageId`: the ID of the packet
+* `properties`: properties of packet
 * `granted`: a vector of granted QoS levels
 
 #### Event: 'unsubscribe'
@@ -308,16 +405,38 @@ Emitted when a MQTT unsubscribe packet is received.
 `packet` is an object that may contain the properties:
 
 * `messageId`: the ID of the packet
+* `properties`: properties of packet
 * `unsubscriptions`: a list of topics the client is
 unsubscribing from, of the form `[topic1, topic2, ...]`
 
-#### Events: \<'pingreq', 'pingresp', 'disconnect'\>
+#### Events: \<'pingreq', 'pingresp'\>
 `function(packet){}`
 
 Emitted when a MQTT `[pingreq, pingresp, disconnect]` packet is received.
 
 `packet` only includes static header information and can be ignored.
 
+#### Event: 'disconnect'
+`function(packet) {}`
+
+Emitted when a MQTT disconnect packet is received.
+
+`packet` only includes static header information and can be ignored for MQTT < 5.0.
+
+`packet` is an object that may contain the properties for MQTT 5.0:
+
+* `reasonCode`: disconnect Reason Code
+* `properties`: properties of packet
+
+#### Event: 'auth'
+`function(packet) {}`
+
+Emitted when a MQTT auth packet is received.
+
+`packet` is an object that may contain the properties:
+
+* `reasonCode`: Auth Reason Code
+* `properties`: properties of packet
 -------------------------------------
 
 <a name="generateStream">
