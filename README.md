@@ -95,6 +95,7 @@ As a websocket server:
 var websocket = require('websocket-stream')
 var WebSocketServer = require('ws').Server
 var Connection = require('mqtt-connection')
+var http = require('http)
 var server = http.createServer()
 
 var wss = new WebSocketServer({server: server})
