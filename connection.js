@@ -71,18 +71,19 @@ inherits(Connection, Duplexify)
   'pingreq',
   'pingresp',
   'disconnect',
-  'auth'].forEach(function (cmd) {
-    Connection.prototype[cmd] = function (opts, cb) {
-      opts = opts || {}
-      opts.cmd = cmd
+  'auth'
+].forEach(function (cmd) {
+  Connection.prototype[cmd] = function (opts, cb) {
+    opts = opts || {}
+    opts.cmd = cmd
 
-      // Flush the buffer if needed
-      // UGLY hack, we should listen for the 'drain' event
-      // and start writing again, but this works too
-      this.write(opts)
-      if (cb) setImmediate(cb)
-    }
-  })
+    // Flush the buffer if needed
+    // UGLY hack, we should listen for the 'drain' event
+    // and start writing again, but this works too
+    this.write(opts)
+    if (cb) setImmediate(cb)
+  }
+})
 
 Connection.prototype.destroy = function () {
   if (this.stream.destroy) this.stream.destroy()

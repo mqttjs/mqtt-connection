@@ -35,6 +35,6 @@
   "devDependencies": {
     "mocha": "^4.0.0",
     "should": "^13.0.0",
-    "standard": "^10.0.3"
+    "standard": "^11.0.0"
   }
 }
