@@ -45,7 +45,7 @@ function Connection (duplex, opts, cb) {
   if (opts.notData !== true) {
     var that = this
     this.once('data', function (connectPacket) {
-      that.setOptions(connectPacket)
+      that.setOptions(connectPacket, opts)
       that.on('data', emitPacket)
       if (cb) {
         cb()
@@ -90,10 +90,15 @@ Connection.prototype.destroy = function () {
   else this.stream.end()
 }
 
-Connection.prototype.setOptions = function (opts) {
-  this.options = opts
-  this._parser.setOptions(opts)
-  this._generator.setOptions(opts)
+Connection.prototype.setOptions = function (packet, opts) {
+  let options = {} || packet
+  // Specifically set the protocol version for client connections
+  if (options.cmd === 'connack') {
+    options.protocolVersion = opts && opts.protocolVersion ? opts.protocolVersion : 4
+  }
+  this.options = options
+  this._parser.setOptions(options)
+  this._generator.setOptions(options)
 }
 
 module.exports = Connection
