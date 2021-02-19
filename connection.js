@@ -91,7 +91,8 @@ Connection.prototype.destroy = function () {
 }
 
 Connection.prototype.setOptions = function (packet, opts) {
-  let options = {} || packet
+  let options = {}
+  Object.assign(options, packet)
   // Specifically set the protocol version for client connections
   if (options.cmd === 'connack') {
     options.protocolVersion = opts && opts.protocolVersion ? opts.protocolVersion : 4
