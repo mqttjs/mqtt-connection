@@ -400,7 +400,7 @@ module.exports = function () {
       var expected = {
         cmd: 'pubrel',
         retain: false,
-        qos: 0,
+        qos: 1,
         dup: false,
         length: 2,
         messageId: 4,
@@ -409,7 +409,7 @@ module.exports = function () {
       }
 
       var fixture = [
-        96, 2, // Header
+        98, 2, // Header
         0, 4 // Message id
       ]
 
@@ -537,17 +537,17 @@ module.exports = function () {
         retain: false,
         qos: 0,
         dup: false,
-        length: 6,
-        granted: [0, 1, 2, 128],
+        length: 5,
+        granted: [0, 1, 2],
         messageId: 6,
         topic: null,
         payload: null
       }
 
       var fixture = [
-        144, 6, // Header
+        144, 5, // Header
         0, 6, // Message id
-        0, 1, 2, 128 // Granted qos (0, 1, 2) and a rejected being 0x80
+        0, 1, 2 // Granted qos (0, 1, 2)
       ]
 
       this.stream.write(Buffer.from(fixture))
